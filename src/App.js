@@ -1,12 +1,20 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./styles/variables.styles";
+import { selectTheme } from './features/ui/ui.selectors';
+import GlobalStyles from "./styles/golobalStyles";
 
 import './App.css';
 
-function App() {
+const App = () => {
+  const theme = useSelector(selectTheme)
   return (
-    <div className="App">
+    <ThemeProvider theme={theme === 'darkTheme' ? darkTheme : lightTheme}>
+      <GlobalStyles />
      
-    </div>
+    </ThemeProvider>
   );
 }
 
