@@ -27,3 +27,5 @@ const initialState = {
 
     },
   });
+
+  export default invoicesSlice.reducer;
