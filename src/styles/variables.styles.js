@@ -1,4 +1,4 @@
-// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 
 export const colors = {
   clrPurple: "rgb(124, 93, 250)",

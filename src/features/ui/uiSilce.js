@@ -15,13 +15,14 @@ const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    toggleTheme : (state , {paylod})=>{
-        state.theme = paylod
-    }
-    
+    toggleTheme: (state) => {
+      state.theme === "darkTheme"
+        ? (state.theme = "lightTheme")
+        : (state.theme = "darkTheme");
+    },
   },
 });
 
-
+export const { toggleTheme } = uiSlice.actions;
 
 export default uiSlice.reducer;

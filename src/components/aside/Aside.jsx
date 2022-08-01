@@ -1,9 +1,33 @@
-import React from 'react'
+import { useSelector, useDispatch } from "react-redux";
+import { selectTheme } from "../../features/ui/ui.selectors";
+import { toggleTheme } from "../../features/ui/uiSilce";
+
+import IMAGES from "../../assets/images";
+import { AsideBarWrapper, Logo, ToggleSwitch, Profile } from "./aside.styles";
 
 const Aside = () => {
-  return (
-    <div>Aside</div>
-  )
-}
+  const { logo, avatar, iconMoon, iconSun } = IMAGES;
+  const theme = useSelector(selectTheme);
 
-export default Aside
+  const dipacth = useDispatch();
+
+  const handleToggle = () => {
+    dipacth(toggleTheme());
+  };
+
+  return (
+    <>
+      <AsideBarWrapper>
+        <Logo src={logo} alt='logo' />
+        <ToggleSwitch
+          src={theme === "darkTheme" ? iconSun : iconMoon}
+          alt='theme toggle'
+          onClick={handleToggle}
+        />
+        <Profile src={avatar} alt='profile' />
+      </AsideBarWrapper>
+    </>
+  );
+};
+
+export default Aside;
