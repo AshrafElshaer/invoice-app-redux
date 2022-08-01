@@ -5,7 +5,7 @@ const initialState = {
   isFilterOpen: false,
   isFormOpen: false,
   model: {
-    isconfirmationModelOpen: false,
+    isConfirmationModelOpen: false,
     isNotificationOpen: false,
     notificationText: "",
   },

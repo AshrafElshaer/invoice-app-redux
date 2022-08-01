@@ -1,21 +1,23 @@
 import styled from "styled-components";
 import { colors } from "../../styles/variables.styles";
+import { mediaQuery } from "../../styles/mediaQuerya.styles";
 
 export const BaseButton = styled.button`
   all: unset;
-  color:${({theme})=> theme.clrPrimary};
-  font-size:12px;
+  position: relative;
+  color: ${({ theme }) => theme.clrPrimary};
+  font-size: 12px;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
-  font-size: 1rem;
   cursor: pointer;
-  padding : 0.75rem;
+  padding: 0.75rem;
   margin-inline: 0.5rem;
   border-radius: 2rem;
-
-  
+  ${mediaQuery.desktop} {
+    font-size: 1rem;
+  }
 `;
 export const PurpleButton = styled(BaseButton)`
   color: ${colors.clrWhite};
@@ -24,10 +26,10 @@ export const PurpleButton = styled(BaseButton)`
   &:hover {
     background-color: ${colors.clrPurpleHover};
   }
-  img{
+  img {
     background-color: white;
-    width:32pxpx;
-    padding:11px;
+    width: 32pxpx;
+    padding: 11px;
     border-radius: 50%;
   }
 `;

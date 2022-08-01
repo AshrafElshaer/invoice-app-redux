@@ -1,5 +1,6 @@
 import IMAGES from "../../assets/images";
 import Button from "../button/Button";
+import FilterDropdown from "../filter-dropdown/FilterDropdown";
 
 import {
   HomeWrapper,
@@ -19,9 +20,12 @@ const Home = () => {
           <InvoicesCount>There are 7 total invoices</InvoicesCount>
         </TitleContainer>
 
-        <Button>
-          Filter by status <img src={iconArrowDown} alt='icon Arrow' />
-        </Button>
+        <div className='dropdown-container'>
+          <Button>
+            Filter by status <img src={iconArrowDown} alt='icon Arrow' />
+          </Button>
+          <FilterDropdown />
+        </div>
         <Button buttonType='purple'>
           <img src={iconPlus} alt='icon Plus' />
           New Invoice
