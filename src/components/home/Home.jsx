@@ -1,3 +1,4 @@
+import { useState } from "react";
 import IMAGES from "../../assets/images";
 import Button from "../button/Button";
 import FilterDropdown from "../filter-dropdown/FilterDropdown";
@@ -12,6 +13,9 @@ import {
 
 const Home = () => {
   const { iconArrowDown, iconPlus } = IMAGES;
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
+
   return (
     <HomeWrapper>
       <HeaderWrapper>
@@ -21,10 +25,15 @@ const Home = () => {
         </TitleContainer>
 
         <div className='dropdown-container'>
-          <Button>
-            Filter by status <img src={iconArrowDown} alt='icon Arrow' />
+          <Button onClick={toggleDropdown}>
+            Filter by status
+            <img
+              src={iconArrowDown}
+              alt='icon Arrow'
+              style={{ rotate: isFilterOpen && "180deg" }}
+            />
           </Button>
-          <FilterDropdown />
+          {isFilterOpen && <FilterDropdown />}
         </div>
         <Button buttonType='purple'>
           <img src={iconPlus} alt='icon Plus' />

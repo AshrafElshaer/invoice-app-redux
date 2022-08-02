@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   theme: "darkTheme",
-  isFilterOpen: false,
   isFormOpen: false,
   model: {
     isConfirmationModelOpen: false,

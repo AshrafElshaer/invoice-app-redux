@@ -15,6 +15,9 @@ export const BaseButton = styled.button`
   padding: 0.75rem;
   margin-inline: 0.5rem;
   border-radius: 2rem;
+  img{
+    transition : all 0.3s ease-in-out;
+  }
   ${mediaQuery.desktop} {
     font-size: 1rem;
   }

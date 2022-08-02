@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import IMAGES from "../../assets/images";
-import { colors } from "../../styles/variables.styles";
 
 export const DropdownContainer = styled.div`
   font-size: 1rem;
@@ -15,7 +14,7 @@ export const DropdownContainer = styled.div`
   top: 4rem;
   left: 0;
 
-  background-color: ${({theme})=> theme.clrBgSecondary};
+  background-color: ${({ theme }) => theme.clrBgSecondary};
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.25);
 
@@ -24,7 +23,7 @@ export const DropdownContainer = styled.div`
 
 export const Label = styled.label`
   cursor: pointer;
-  color : ${({theme})=> theme.clrPrimary};
+  color: ${({ theme }) => theme.clrPrimary};
   user-select: none;
 
   &:hover > input {
@@ -36,7 +35,7 @@ export const Input = styled.input`
   width: 1rem;
   height: 1rem;
   margin-right: 12px;
-  background-color: ${({theme})=> theme.clrBgPrimary};
+  background-color: ${({ theme }) => theme.clrBgPrimary};
   border-radius: 2px;
   appearance: none;
   cursor: pointer;
