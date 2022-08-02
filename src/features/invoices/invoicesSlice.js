@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import INVOICES from "../../assets/data.json";
 
 const initialState = {
-  allInvoices: [],
+  invoices: [...INVOICES],
   filteredInvoices: [],
   selectedFilterStatus: "all",
 };
@@ -12,19 +13,25 @@ const invoicesSlice = createSlice({
   reducers: {
     // ASYNC FROM FIRBASE DB
     setInvoices: (state, { payload }) => {
-      state.allInvoices = payload;
+      state.invoices = payload;
     },
     addNewInvoice: (state, { payload }) => {
-      state.allInvoices.push(payload);
+      state.invoices.push(payload);
     },
     deleteInvoice: (state, { payload }) => {
-      state.allInvoices.filter((invoice) => invoice.id !== payload.id);
+      state.invoices.filter((invoice) => invoice.id !== payload.id);
     },
     updateInvoice: (state, { payload }) => {
-      state.allInvoices.find((invoice) => invoice.id === payload.id);
+      state.invoices.find((invoice) => invoice.id === payload.id);
     },
     filterBy: (state, { payload }) => {
       state.selectedFilterStatus = payload;
+
+      payload === "all"
+        ? (state.filteredInvoices = state.invoices)
+        : (state.filteredInvoices = state.invoices.filter(
+            (invoice) => invoice.status === payload
+          ));
     },
   },
 });

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownContainer, Label, Input } from "./filterDropdown.styles";
 import { filterBy } from "../../features/invoices/invoicesSlice";
@@ -11,9 +10,7 @@ const FilterDropdown = () => {
   const isPendingdChecked = filterByStatus.includes('pending');
   const isDraftChecked = filterByStatus.includes('draft');
 
-  const handleChecked = (e) => {
-    if (filterByStatus === e.target.value) return true;
-  };
+  
   const handleClick = (e) => {
     dispatch(filterBy(e.target.value));
   };
