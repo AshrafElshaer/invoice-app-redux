@@ -1,22 +1,16 @@
-
 import HomeHeader from "../../components/home-header/HomeHedaer";
+import InvoicesList from "../../components/invoices-list/InvoicesList";
 
-import {
-  HomeWrapper,
-} from "./home.styles";
+import { HomeContainer } from "./home.styles";
 
 const Home = () => {
-  
-
   return (
-    <HomeWrapper>
-      <>
-        <HomeHeader />
-      </>
+    <HomeContainer>
 
-
-     
-    </HomeWrapper>
+      <HomeHeader />
+      <InvoicesList />
+      
+    </HomeContainer>
   );
 };
 

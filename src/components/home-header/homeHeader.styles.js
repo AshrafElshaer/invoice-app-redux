@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { mediaQuery } from "../../styles/mediaQuerya.styles";
 
 
-export const HeaderWrapper = styled.div`
+export const HeaderContaien = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -18,7 +18,7 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
-export const TitleContainer = styled.div`
+export const TitleWrapper = styled.div`
   ${mediaQuery.desktop} {
     margin-right: auto;
   }

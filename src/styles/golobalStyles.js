@@ -46,6 +46,10 @@ h3{
     font-size: 1rem;
 
 }
+b{
+    margin-inline: 0.25rem;
+
+}
 
 
 img {

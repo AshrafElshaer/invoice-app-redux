@@ -5,7 +5,7 @@ import { selectFilterStatus } from "../../features/invoices/invoces.selector";
 const FilterDropdown = () => {
   const dispatch = useDispatch();
   const filterByStatus = useSelector(selectFilterStatus);
-  const isAllChecked = filterByStatus.includes('all');
+  const isAllChecked = filterByStatus.includes('total');
   const isPaidChecked = filterByStatus.includes('paid');
   const isPendingdChecked = filterByStatus.includes('pending');
   const isDraftChecked = filterByStatus.includes('draft');
@@ -20,8 +20,8 @@ const FilterDropdown = () => {
         <Input
           type='radio'
           name='filter'
-          id='all'
-          value='all'
+          id='total'
+          value='total'
           onClick={handleClick}
           defaultChecked={isAllChecked}
          

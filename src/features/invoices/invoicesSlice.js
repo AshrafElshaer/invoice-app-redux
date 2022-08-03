@@ -3,8 +3,8 @@ import INVOICES from "../../assets/data.json";
 
 const initialState = {
   invoices: [...INVOICES],
-  filteredInvoices: [],
-  selectedFilterStatus: "all",
+  filteredInvoices: [...INVOICES],
+  selectedFilterStatus: "total",
 };
 
 const invoicesSlice = createSlice({
@@ -27,7 +27,7 @@ const invoicesSlice = createSlice({
     filterBy: (state, { payload }) => {
       state.selectedFilterStatus = payload;
 
-      payload === "all"
+      payload === "total"
         ? (state.filteredInvoices = state.invoices)
         : (state.filteredInvoices = state.invoices.filter(
             (invoice) => invoice.status === payload

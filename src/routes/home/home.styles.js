@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HomeWrapper = styled.div`
+export const HomeContainer = styled.div`
   height: 100vh;
   width: 100%;
   max-width: 730px;
