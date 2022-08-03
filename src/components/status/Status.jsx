@@ -3,9 +3,9 @@ import { PaidStatus, Dot, DraftStatus, PendingStatus } from "./status.styles";
 
 const Status = ({ statusType }) => {
   const STATUS_TYPE_CLASSES = {
-    paid: "Paid",
-    pending: "Pending",
-    draft: "Draft",
+    paid: "paid",
+    pending: "pending",
+    draft: "draft",
   };
 
   const getButton = (statusType) =>

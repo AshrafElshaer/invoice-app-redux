@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-
-import { selectFilterStatus, selectInvoicesCount } from "../../features/invoices/invoces.selector";
+import {
+  selectFilterStatus,
+  selectInvoicesCount,
+} from "../../features/invoices/invoces.selector";
 
 import IMAGES from "../../assets/images";
 import Button from "../../components/button/Button";
@@ -21,14 +23,20 @@ const HomeHeader = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
 
-  const invoicesCount = useSelector(selectInvoicesCount)
-  const filterStatus = useSelector(selectFilterStatus)
+  const invoicesCount = useSelector(selectInvoicesCount);
+  const filterStatus = useSelector(selectFilterStatus);
 
   return (
     <HeaderContaien>
       <TitleWrapper>
         <Title>Invoices</Title>
-        <InvoicesCount>There are {invoicesCount} {filterStatus.toUpperCase()} invoices</InvoicesCount>
+        {invoicesCount ? (
+          <InvoicesCount>
+            There are {invoicesCount}   {filterStatus} invoices
+          </InvoicesCount>
+        ) : (
+          <InvoicesCount>No Invoices</InvoicesCount>
+        )}
       </TitleWrapper>
 
       <DropdownContainer>

@@ -33,6 +33,8 @@ export const Title = styled.h1`
 export const InvoicesCount = styled.span`
   color: ${({ theme }) => theme.clrSecondary};
   font-size: 12px;
+  text-transform: capitalize;
+
 `;
 
 export const DropdownContainer = styled.div`
