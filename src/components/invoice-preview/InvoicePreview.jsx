@@ -8,7 +8,7 @@ const InvoicePreview = ({ invoice }) => {
 
   return (
     <Wrapper to={id}>
-      <h2>#</h2>
+      <span>#</span>
       <h2>{id}</h2>
 
       <span>Due {paymentDue}</span>

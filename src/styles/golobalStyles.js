@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { mediaQuery } from "./mediaQuerya.styles";
 
@@ -72,6 +73,13 @@ button{
         }
 }
 
+`;
+export const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+  max-width: 730px;
+  padding-inline: 1.5rem;
+  margin-inline: auto;
 `;
 
 export default GlobalStyles;

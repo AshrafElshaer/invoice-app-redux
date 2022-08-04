@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { mediaQuery } from "../../styles/mediaQuerya.styles";
 
 
-export const HeaderContaien = styled.div`
+export const HeaderContaienr = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;

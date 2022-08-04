@@ -16,7 +16,6 @@ import InvoiceViewer from "./routes/invoice-viewer/InvoiceViewer";
 const App = () => {
   const theme = useSelector(selectTheme);
   const user = useSelector(selectUser);
-  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={theme === "darkTheme" ? darkTheme : lightTheme}>
@@ -25,13 +24,12 @@ const App = () => {
       <AppWrapper>
         <Aside />
         <Routes>
-          <Route index element={<Home />} />
-          <Route path=':id' element={<InvoiceViewer />} />
-          {/* {user ? (
-            <Route index element={<Directory />} />
-          ) : (
-            <Route index element={<Authentication />} />
-          )} */}
+          <Route path="/" element={<Home />} />
+          <Route path='/:invoiceId' element={<InvoiceViewer />} />
+          <Route path='/auth' element={<Authentication />} />
+
+          
+          
         </Routes>
         <Outlet/>
       </AppWrapper>

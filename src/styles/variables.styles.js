@@ -21,7 +21,7 @@ export const darkTheme = {
   clrBgPrimary: "rgb(20, 22, 37)",
   clrBgSecondary: "rgb(30, 33, 57)",
 // BLACK BUTTON COLORS
-  clrBtnPrimaryBg: "rgb(30, 33, 57)",
+  clrBtnPrimaryBg: "rgb(20, 22, 37)",
   clrBtnHoverPrimary: "rgb(30, 33, 57)",
   clrBtnHoverBg: "rgb(223, 227, 250)",
 };
@@ -33,7 +33,7 @@ export const lightTheme = {
   clrBgPrimary: "rgb(248, 248, 251)",
   clrBgSecondary: "rgb(255, 255, 255)",
   // BLACK BUTTON COLORS
-  clrBtnPrimaryBg: "rgb(255, 255, 255)",
+  clrBtnPrimaryBg: "rgba(249, 250, 254)",
   clrBtnHoverPrimary: "rgb(30, 33, 57)",
-  clrBtnHoverBg: "rgb(223, 227, 250)",
+  clrBtnHoverBg: "rgba(223, 227, 250)",
 };

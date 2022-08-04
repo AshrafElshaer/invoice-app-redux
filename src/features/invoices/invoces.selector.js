@@ -1,8 +1,22 @@
 import { createSelector } from "reselect";
 
-const selectInvoicesReducer = (state) => state.invoices ;
+const selectInvoicesReducer = (state) => state.invoices;
 
-export const selectFilterStatus = createSelector([selectInvoicesReducer], (invoice) => invoice.selectedFilterStatus);
+export const selectInvoices = createSelector(
+    [selectInvoicesReducer],
+    (invoices) => invoices.invoices
+  );
 
-export const selectFilteredInvoices = createSelector([selectInvoicesReducer], (invoice) => invoice.filteredInvoices);
-export const selectInvoicesCount = createSelector([selectInvoicesReducer], (invoice) => invoice.filteredInvoices.length);
+export const selectFilterStatus = createSelector(
+  [selectInvoicesReducer],
+  (invoices) => invoices.selectedFilterStatus
+);
+
+export const selectFilteredInvoices = createSelector(
+  [selectInvoicesReducer],
+  (invoices) => invoices.filteredInvoices
+);
+export const selectInvoicesCount = createSelector(
+  [selectInvoicesReducer],
+  (invoices) => invoices.filteredInvoices.length
+);

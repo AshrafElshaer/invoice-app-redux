@@ -11,7 +11,7 @@ import Button from "../../components/button/Button";
 import FilterDropdown from "../../components/filter-dropdown/FilterDropdown";
 
 import {
-  HeaderContaien,
+  HeaderContaienr,
   Title,
   InvoicesCount,
   TitleWrapper,
@@ -27,12 +27,12 @@ const HomeHeader = () => {
   const filterStatus = useSelector(selectFilterStatus);
 
   return (
-    <HeaderContaien>
+    <HeaderContaienr>
       <TitleWrapper>
         <Title>Invoices</Title>
         {invoicesCount ? (
           <InvoicesCount>
-            There are {invoicesCount}   {filterStatus} invoices
+            There are {invoicesCount} {filterStatus} invoices
           </InvoicesCount>
         ) : (
           <InvoicesCount>No Invoices</InvoicesCount>
@@ -48,14 +48,14 @@ const HomeHeader = () => {
             style={{ rotate: isFilterOpen && "180deg" }}
           />
         </Button>
-        {isFilterOpen && <FilterDropdown />}
+        {isFilterOpen && <FilterDropdown setIsFilterOpen={setIsFilterOpen} />}
       </DropdownContainer>
 
       <Button buttonType='purple'>
         <img src={iconPlus} alt='icon Plus' />
         New Invoice
       </Button>
-    </HeaderContaien>
+    </HeaderContaienr>
   );
 };
 

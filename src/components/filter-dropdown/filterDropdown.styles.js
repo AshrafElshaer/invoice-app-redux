@@ -16,7 +16,7 @@ export const DropdownContainer = styled.div`
 
   background-color: ${({ theme }) => theme.clrBgSecondary};
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);  
 
   z-index: 2;
 `;

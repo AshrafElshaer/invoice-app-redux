@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownContainer, Label, Input } from "./filterDropdown.styles";
 import { filterBy } from "../../features/invoices/invoicesSlice";
 import { selectFilterStatus } from "../../features/invoices/invoces.selector";
-const FilterDropdown = () => {
+const FilterDropdown = ({setIsFilterOpen}) => {
   const dispatch = useDispatch();
   const filterByStatus = useSelector(selectFilterStatus);
   const isAllChecked = filterByStatus.includes('total');
@@ -13,6 +13,7 @@ const FilterDropdown = () => {
   
   const handleClick = (e) => {
     dispatch(filterBy(e.target.value));
+    setIsFilterOpen(false);
   };
   return (
     <DropdownContainer>

@@ -7,6 +7,7 @@ export const BaseButton = styled.button`
   position: relative;
   color: ${({ theme }) => theme.clrPrimary};
   font-size: 12px;
+  min-width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,6 +26,8 @@ export const BaseButton = styled.button`
 export const PurpleButton = styled(BaseButton)`
   color: ${colors.clrWhite};
   background-color: ${colors.clrPurple};
+  min-width: 100px;
+
 
   &:hover {
     background-color: ${colors.clrPurpleHover};
