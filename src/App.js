@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Route, Routes, useNavigate  , Outlet} from "react-router-dom";
+import { Route, Routes , Outlet} from "react-router-dom";
 
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/variables.styles";
@@ -27,9 +27,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path='/:invoiceId' element={<InvoiceViewer />} />
           <Route path='/auth' element={<Authentication />} />
-
-          
-          
         </Routes>
         <Outlet/>
       </AppWrapper>

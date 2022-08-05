@@ -14,7 +14,6 @@ export const BaseButton = styled.button`
   gap: 1rem;
   cursor: pointer;
   padding: 0.75rem;
-  margin-inline: 0.5rem;
   border-radius: 2rem;
   img{
     transition : all 0.3s ease-in-out;

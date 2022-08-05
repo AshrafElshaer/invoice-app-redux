@@ -4,7 +4,7 @@ import IMAGES from "../../assets/images";
 export const DropdownContainer = styled.div`
   font-size: 1rem;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
