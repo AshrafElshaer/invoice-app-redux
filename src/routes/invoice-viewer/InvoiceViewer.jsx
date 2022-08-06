@@ -11,15 +11,25 @@ import {
   BackLink,
   StatusWrapper,
   ActionsWrapper,
+  InvoiceWrapper,
+  Row,
+  Cell,
 } from "./invoiceViewer.styles";
-
 
 const InvoiceViewer = () => {
   const { invoiceId } = useParams();
-  const { id, description, status, createdAt, senderAddress } = useSelector(
-    selectInvoices
-  ).find((el) => el.id === invoiceId);
-  
+  const {
+    id,
+    description,
+    status,
+    createdAt,
+    senderAddress,
+    paymentDue,
+    clientName,
+    clientAddress,
+    clientEmail,
+  } = useSelector(selectInvoices).find((el) => el.id === invoiceId);
+
   return (
     <Container>
       <BackLink to='/'>
@@ -36,44 +46,41 @@ const InvoiceViewer = () => {
           <Button buttonType='purple'>Mark as Paid</Button>
         </ActionsWrapper>
       </HeaderContainer>
-      <div className='invoiceWrapper'>
-        <table className='header-table'>
-          <tbody>
-            <tr>
-              <td>
-                <h2>#{id}</h2>
-                <span>{description}</span>
-              </td>
-              <td>
-                <span>
-                  {senderAddress.street}
-                  {senderAddress.city}
-                  {senderAddress.postCode}
-                  {senderAddress.country}
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span>Invoice Date</span>
-                <h2>
-                  {formatDate(createdAt)}
-                </h2>
-                <span>Payment Due</span>
-                <h2>paymentDue</h2>
-              </td>
-              <td>
-                <span>Bill To</span>
-                <h2>clientName</h2>
-                <span>clientAddress</span>
-              </td>
-              <td>
-                <span>Sent to</span>
-                <h2>clientEmail</h2>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+      <InvoiceWrapper>
+        <Row>
+          <Cell>
+            <h2># {id}</h2>
+            <span>{description}</span>
+          </Cell>
+          <Cell>
+            <span>{senderAddress.street}</span>
+            <span>{senderAddress.city}</span>
+            <span>{senderAddress.postCode}</span>
+            <span>{senderAddress.country}</span>
+          </Cell>
+        </Row>
+        <Row>
+          <Cell>
+            <span>Invoice Date</span>
+            <h2>{formatDate(createdAt)}</h2>
+            <span>Payment Due</span>
+            <h2>{formatDate(paymentDue)}</h2>
+          </Cell>
+          <Cell>
+            <span>Bill To</span>
+            <h2>{clientName}</h2>
+            <span>{clientAddress.street}</span>
+            <span>{clientAddress.city}</span>
+            <span>{clientAddress.postCode}</span>
+            <span>{clientAddress.country}</span>
+          </Cell>
+          <Cell>
+            <span>Sent to</span>
+            <h2>{clientEmail}</h2>
+          </Cell>
+        </Row>
+
         <table className='items-table'>
           <thead>
             <tr>
@@ -118,7 +125,7 @@ const InvoiceViewer = () => {
             </tr>
           </tfoot>
         </table>
-      </div>
+      </InvoiceWrapper>
     </Container>
   );
 };

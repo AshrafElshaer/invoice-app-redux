@@ -10,7 +10,7 @@ const InvoicePreview = ({ invoice }) => {
   return (
     <Wrapper to={id}>
 
-      <h2><span>#</span>{id}</h2>
+      <h2><span># </span>{id}</h2>
       <span>Due {formatDate(paymentDue)}</span>
       <span>{clientName}</span>
       <h2>${total}</h2>
