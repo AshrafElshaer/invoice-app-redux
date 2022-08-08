@@ -62,40 +62,96 @@ export const ActionsWrapper = styled.div`
     }
   }
 `;
+export const Cell = styled.td`
+  flex: 1;
 
-export const InvoiceWrapper = styled.div`
+  h2,
+  h3 {
+    color: ${({ theme }) => theme.clrPrimary};
+    margin-bottom: 0.75rem;
+  }
+  span {
+    color: ${({ theme }) => theme.clrSecondary};
+    display: block;
+  }
+`;
+export const Row = styled.tr`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+  // margin-top: 1.5rem;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    thead {
+      &:first-of-type ${Cell}:nth-of-type(2) {
+        text-align: right;
+      }
+    }
+  }
+`;
+export const InvoiceWrapper = styled.table`
   padding-inline: 2rem;
   padding-block: 1.25rem;
   background-color: ${({ theme }) => theme.clrBgSecondary};
   margin-top: 1rem;
   border-radius: 8px;
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
-`;
-export const Cell = styled.div`
-  flex: 1;
+  width: 100%;
 
-  h2 {
-    color: ${({ theme }) => theme.clrPrimary};
-    margin-bottom: 0.75rem;
+  tbody,
+  tfoot {
+    ${Cell} {
+      padding: 1rem;
+    }
   }
-  span{
-    color: ${({ theme }) => theme.clrSecondary};
+  tbody {
     display: block;
+    margin-top: 1.5rem;
+    background-color: green;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
-`;
-export const Row = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  tfoot {
+    display: block;
+
+    background-color: black;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
 
   @media (min-width: 600px) {
-    flex-direction: row;
-    text-align: left;
-
-    &:first-of-type ${Cell}:nth-of-type(2) {
-      text-align: right;
+    thead {
+      ${Row} {
+        text-align: left;
+      }
+      ${Row}:first-of-type ${Cell}:nth-of-type(2) {
+        text-align: right;
+      }
+    }
+    tbody {
+      ${Cell} {
+        text-align: center;
+        &:first-of-type {
+          flex: 3;
+          text-align: left;
+        }
+      }
+    }
+    tfoot {
+      ${Cell} {
+        h2,
+        span {
+          margin-block: auto;
+        }
+        &:first-of-type {
+          text-align: left;
+        }
+        &:last-of-type {
+          text-align: right;
+        }
+      }
     }
   }
 `;

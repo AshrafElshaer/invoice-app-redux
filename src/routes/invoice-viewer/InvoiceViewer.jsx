@@ -15,6 +15,7 @@ import {
   Row,
   Cell,
 } from "./invoiceViewer.styles";
+import ItemPreview from "../../components/item-preview/ItemPreview";
 
 const InvoiceViewer = () => {
   const { invoiceId } = useParams();
@@ -28,6 +29,7 @@ const InvoiceViewer = () => {
     clientName,
     clientAddress,
     clientEmail,
+    items,
   } = useSelector(selectInvoices).find((el) => el.id === invoiceId);
 
   return (
@@ -48,83 +50,72 @@ const InvoiceViewer = () => {
       </HeaderContainer>
 
       <InvoiceWrapper>
-        <Row>
-          <Cell>
-            <h2># {id}</h2>
-            <span>{description}</span>
-          </Cell>
-          <Cell>
-            <span>{senderAddress.street}</span>
-            <span>{senderAddress.city}</span>
-            <span>{senderAddress.postCode}</span>
-            <span>{senderAddress.country}</span>
-          </Cell>
-        </Row>
-        <Row>
-          <Cell>
-            <span>Invoice Date</span>
-            <h2>{formatDate(createdAt)}</h2>
-            <span>Payment Due</span>
-            <h2>{formatDate(paymentDue)}</h2>
-          </Cell>
-          <Cell>
-            <span>Bill To</span>
-            <h2>{clientName}</h2>
-            <span>{clientAddress.street}</span>
-            <span>{clientAddress.city}</span>
-            <span>{clientAddress.postCode}</span>
-            <span>{clientAddress.country}</span>
-          </Cell>
-          <Cell>
-            <span>Sent to</span>
-            <h2>{clientEmail}</h2>
-          </Cell>
-        </Row>
-
-        <table className='items-table'>
+  
           <thead>
-            <tr>
-              <td>
-                <span>Item Name </span>
-              </td>
-              <td>
-                <span>QTY. </span>
-              </td>
-              <td>
-                <span>Price </span>
-              </td>
-              <td>
-                <span>Total </span>
-              </td>
-            </tr>
+            <Row>
+              <Cell>
+                <h2># {id}</h2>
+                <span>{description}</span>
+              </Cell>
+              <Cell>
+                <span>{senderAddress.street}</span>
+                <span>{senderAddress.city}</span>
+                <span>{senderAddress.postCode}</span>
+                <span>{senderAddress.country}</span>
+              </Cell>
+            </Row>
+            <Row>
+              <Cell>
+                <span>Invoice Date</span>
+                <h2>{formatDate(createdAt)}</h2>
+                <span>Payment Due</span>
+                <h2>{formatDate(paymentDue)}</h2>
+              </Cell>
+              <Cell>
+                <span>Bill To</span>
+                <h2>{clientName}</h2>
+                <span>{clientAddress.street}</span>
+                <span>{clientAddress.city}</span>
+                <span>{clientAddress.postCode}</span>
+                <span>{clientAddress.country}</span>
+              </Cell>
+              <Cell>
+                <span>Sent to</span>
+                <h2>{clientEmail}</h2>
+              </Cell>
+            </Row>
           </thead>
+
           <tbody>
-            <tr>
-              <td>
-                <h3>items.Name</h3>
-              </td>
-              <td>
-                <h3>items.quantity</h3>
-              </td>
-              <td>
-                <h3>items.price</h3>
-              </td>
-              <td>
-                <h3>items.total</h3>
-              </td>
-            </tr>
+            <Row>
+              <Cell>
+                <span>Item Name</span>
+              </Cell>
+              <Cell>
+                <span>QTY.</span>
+              </Cell>
+              <Cell>
+                <span>Price</span>
+              </Cell>
+              <Cell>
+                <span>Total</span>
+              </Cell>
+            </Row>
+
+            {items.map((item) => (
+              <ItemPreview item={item} key={item.name} />
+            ))}
           </tbody>
           <tfoot>
-            <tr>
-              <td>
+            <Row>
+              <Cell>
                 <span>Amout Due</span>
-              </td>
-              <td>
-                <h1>$ total reducer</h1>
-              </td>
-            </tr>
+              </Cell>
+              <Cell>
+                <h2>$ total reducer</h2>
+              </Cell>
+            </Row>
           </tfoot>
-        </table>
       </InvoiceWrapper>
     </Container>
   );

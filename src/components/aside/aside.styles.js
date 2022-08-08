@@ -4,6 +4,9 @@ import { colors } from "../../styles/variables.styles";
 import { mediaQuery } from "../../styles/mediaQuerya.styles";
 
 export const AsideBarWrapper = styled.aside`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 72px;
   display: flex;
@@ -11,6 +14,7 @@ export const AsideBarWrapper = styled.aside`
   align-items: center;
   border-bottom-right-radius: 20px;
   background-color: ${colors.clrAsidBarBg};
+  z-index:2;
 
   ${mediaQuery.desktop} {
     width: 72px;
