@@ -30,6 +30,7 @@ const InvoiceViewer = () => {
     clientAddress,
     clientEmail,
     items,
+    total,
   } = useSelector(selectInvoices).find((el) => el.id === invoiceId);
 
   return (
@@ -112,7 +113,7 @@ const InvoiceViewer = () => {
                 <span>Amout Due</span>
               </Cell>
               <Cell>
-                <h2>$ total reducer</h2>
+                <h2>$ {total}</h2>
               </Cell>
             </Row>
           </tfoot>

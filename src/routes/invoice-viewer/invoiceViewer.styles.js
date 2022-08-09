@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { mediaQuery } from "../../styles/mediaQuerya.styles";
+import { colors } from "../../styles/variables.styles";
 
 export const HeaderContainer = styled.div`
   width: 100%;
@@ -112,13 +113,17 @@ export const InvoiceWrapper = styled.table`
     background-color: green;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    background-color: ${({ theme }) => theme.clrInvoiceBodyBg};
   }
   tfoot {
     display: block;
-
-    background-color: black;
+    background-color: ${({ theme }) => theme.clrInvoiceFootBg};
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    span,
+    h2 {
+      color: ${colors.clrWhite} !important;
+    }
   }
 
   @media (min-width: 600px) {
@@ -134,7 +139,7 @@ export const InvoiceWrapper = styled.table`
       ${Cell} {
         text-align: center;
         &:first-of-type {
-          flex: 3;
+          flex: 2;
           text-align: left;
         }
       }
