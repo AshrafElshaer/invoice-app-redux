@@ -4,10 +4,12 @@ import { mediaQuery } from "../../styles/mediaQuerya.styles";
 
 export const HeaderContaienr = styled.div`
   width: 100%;
+  osition: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 4rem;
+  z-index:0;
   ${mediaQuery.tablet} {
     margin-top: 3rem;
   }

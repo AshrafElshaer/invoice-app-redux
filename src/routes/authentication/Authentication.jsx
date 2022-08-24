@@ -1,7 +1,10 @@
 const Authentication = () => {
   return (
-    <div>Authentication</div>
-  )
-}
+    <>
+   
+      <div>Authentication</div>
+    </>
+  );
+};
 
-export default Authentication
+export default Authentication;

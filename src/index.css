@@ -1,36 +1,19 @@
-/* .invoiceWrapper {
-  padding-inline: 2rem;
-  padding-block: 1.25rem;
-  background-color: rgb(30,33,57) ;
-  margin-top:1rem;
+
+
+
+
+
+
+/* select {
+
+  flex : 1;
+  color: rgb(255, 255, 255);
+  padding: 18px;
+  outline: none;
   border-radius: 8px;
-}
-
-.row {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-@media screen and (min-width:600px) {
-  .row{
-    flex-direction: row;
-    text-align: left;
-  }
-  .row:first-of-type .cell:nth-of-type(2){
-    text-align: right;
-    }
-}
-.cell{
-    flex:1;
-}
-
-.cell h2{
-  color: white;
-  margin-bottom: 0.75rem;
-}
-.cell span{
-  color: rgb(179, 179, 179);
-  display: block;
+  border: none;
+  background-color: rgb(30, 33, 57);
+  cursor: pointer;
+  
 } */
+

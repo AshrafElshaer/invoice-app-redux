@@ -22,13 +22,13 @@ const App = () => {
       <GlobalStyles />
 
       <AppWrapper>
-        <Aside />
+      <Aside />
         <Routes>
-          <Route path="/" element={<Home />} />
+          
+          <Route index element={<Home />} />
           <Route path='/:invoiceId' element={<InvoiceViewer />} />
           <Route path='/auth' element={<Authentication />} />
         </Routes>
-        <Outlet/>
       </AppWrapper>
     </ThemeProvider>
   );

@@ -6,12 +6,13 @@ export const InvoicesListContainer = styled.div`
   width: 100%;
   height: 75vh;
   margin-top: 2rem;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
+  z-index: 0;
 `;
 
 export const EmptyInvoicesContainer = styled.div`

@@ -81,6 +81,7 @@ export const Container = styled.div`
   max-width: 730px;
   padding-inline: 1.5rem;
   margin-inline: auto;
+  margin-top:4rem;
 `;
 
 export default GlobalStyles;

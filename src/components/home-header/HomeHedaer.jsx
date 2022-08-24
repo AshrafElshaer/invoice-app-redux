@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch} from "react-redux";
 
 import {
   selectFilterStatus,
   selectInvoicesCount,
 } from "../../features/invoices/invoces.selector";
+import { toggleForm } from "../../features/ui/uiSilce";
 
 import IMAGES from "../../assets/images";
 import Button from "../../components/button/Button";
 import FilterDropdown from "../../components/filter-dropdown/FilterDropdown";
+import InvoiceForm from "../invoice-form/InvoiceForm";
 
 import {
   HeaderContaienr,
@@ -21,7 +23,10 @@ import {
 const HomeHeader = () => {
   const { iconArrowDown, iconPlus } = IMAGES;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
+  const toggleIsForm = () => dispatch(toggleForm());
 
   const invoicesCount = useSelector(selectInvoicesCount);
   const filterStatus = useSelector(selectFilterStatus);
@@ -51,10 +56,11 @@ const HomeHeader = () => {
         {isFilterOpen && <FilterDropdown setIsFilterOpen={setIsFilterOpen} />}
       </DropdownContainer>
 
-      <Button buttonType='purple'>
+      <Button buttonType='purple' onClick={toggleIsForm} >
         <img src={iconPlus} alt='icon Plus' />
         New Invoice
       </Button>
+      {/* <InvoiceForm /> */}
     </HeaderContaienr>
   );
 };

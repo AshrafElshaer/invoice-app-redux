@@ -1,6 +1,7 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../utils/helper";
+import { formatDate } from "../../utils/helper/fotmatDate";
+import { markAsPaid } from "../../features/invoices/invoicesSlice";
 import { selectInvoices } from "../../features/invoices/invoces.selector";
 import Button from "../../components/button/Button";
 import IMAGES from "../../assets/images";
@@ -16,9 +17,13 @@ import {
   Cell,
 } from "./invoiceViewer.styles";
 import ItemPreview from "../../components/item-preview/ItemPreview";
+import InvoiceForm from "../../components/invoice-form/InvoiceForm";
 
 const InvoiceViewer = () => {
   const { invoiceId } = useParams();
+  const dispatch = useDispatch();
+  const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId);
+
   const {
     id,
     description,
@@ -31,7 +36,8 @@ const InvoiceViewer = () => {
     clientEmail,
     items,
     total,
-  } = useSelector(selectInvoices).find((el) => el.id === invoiceId);
+  } = invoice;
+  const handleMarkAsPaid = () => dispatch(markAsPaid(id));
 
   return (
     <Container>
@@ -46,78 +52,81 @@ const InvoiceViewer = () => {
         <ActionsWrapper>
           <Button buttonType='black'>Edit</Button>
           <Button buttonType='red'>Delete</Button>
-          <Button buttonType='purple'>Mark as Paid</Button>
+          <Button buttonType='purple' onClick={handleMarkAsPaid}>
+            Mark as Paid
+          </Button>
         </ActionsWrapper>
       </HeaderContainer>
 
       <InvoiceWrapper>
-  
-          <thead>
-            <Row>
-              <Cell>
-                <h2># {id}</h2>
-                <span>{description}</span>
-              </Cell>
-              <Cell>
-                <span>{senderAddress.street}</span>
-                <span>{senderAddress.city}</span>
-                <span>{senderAddress.postCode}</span>
-                <span>{senderAddress.country}</span>
-              </Cell>
-            </Row>
-            <Row>
-              <Cell>
-                <span>Invoice Date</span>
-                <h2>{formatDate(createdAt)}</h2>
-                <span>Payment Due</span>
-                <h2>{formatDate(paymentDue)}</h2>
-              </Cell>
-              <Cell>
-                <span>Bill To</span>
-                <h2>{clientName}</h2>
-                <span>{clientAddress.street}</span>
-                <span>{clientAddress.city}</span>
-                <span>{clientAddress.postCode}</span>
-                <span>{clientAddress.country}</span>
-              </Cell>
-              <Cell>
-                <span>Sent to</span>
-                <h2>{clientEmail}</h2>
-              </Cell>
-            </Row>
-          </thead>
+        <thead>
+          <Row>
+            <Cell>
+              <h2># {id}</h2>
+              <span>{description}</span>
+            </Cell>
+            <Cell>
+              <span>{senderAddress.street}</span>
+              <span>{senderAddress.city}</span>
+              <span>{senderAddress.postCode}</span>
+              <span>{senderAddress.country}</span>
+            </Cell>
+          </Row>
+          <Row>
+            <Cell>
+              <span>Invoice Date</span>
+              <h2>{formatDate(createdAt)}</h2>
+              <span>Payment Due</span>
+              <h2>{formatDate(paymentDue)}</h2>
+            </Cell>
+            <Cell>
+              <span>Bill To</span>
+              <h2>{clientName}</h2>
+              <span>{clientAddress.street}</span>
+              <span>{clientAddress.city}</span>
+              <span>{clientAddress.postCode}</span>
+              <span>{clientAddress.country}</span>
+            </Cell>
+            <Cell>
+              <span>Sent to</span>
+              <h2>{clientEmail}</h2>
+            </Cell>
+          </Row>
+        </thead>
 
-          <tbody>
-            <Row>
-              <Cell>
-                <span>Item Name</span>
-              </Cell>
-              <Cell>
-                <span>QTY.</span>
-              </Cell>
-              <Cell>
-                <span>Price</span>
-              </Cell>
-              <Cell>
-                <span>Total</span>
-              </Cell>
-            </Row>
+        <tbody>
+          <Row>
+            <Cell>
+              <span>Item Name</span>
+            </Cell>
+            <Cell>
+              <span>QTY.</span>
+            </Cell>
+            <Cell>
+              <span>Price</span>
+            </Cell>
+            <Cell>
+              <span>Total</span>
+            </Cell>
+          </Row>
 
-            {items.map((item) => (
-              <ItemPreview item={item} key={item.name} />
-            ))}
-          </tbody>
-          <tfoot>
-            <Row>
-              <Cell>
-                <span>Amout Due</span>
-              </Cell>
-              <Cell>
-                <h2>$ {total}</h2>
-              </Cell>
-            </Row>
-          </tfoot>
+          {items.map((item) => (
+            <ItemPreview item={item} key={item.name} />
+          ))}
+        </tbody>
+        <tfoot>
+          <Row>
+            <Cell>
+              <span>Amount Due</span>
+            </Cell>
+            <Cell>
+              <h2>$ {total}</h2>
+            </Cell>
+          </Row>
+        </tfoot>
       </InvoiceWrapper>
+
+      <InvoiceForm invoice={invoice} />
     </Container>
   );
 };

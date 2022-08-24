@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   theme: "darkTheme",
-  isFormOpen: false,
-  model: {
+  models: {
+    isFormOpen: false,
     isConfirmationModelOpen: false,
     isNotificationOpen: false,
     notificationText: "",
@@ -19,9 +19,12 @@ const uiSlice = createSlice({
         ? (state.theme = "lightTheme")
         : (state.theme = "darkTheme");
     },
+    toggleForm : (state) => {
+      state.models.isFormOpen = !state.models.isFormOpen
+    }
   },
 });
 
-export const { toggleTheme } = uiSlice.actions;
+export const { toggleTheme , toggleForm } = uiSlice.actions;
 
 export default uiSlice.reducer;
