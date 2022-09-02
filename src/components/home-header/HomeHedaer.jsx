@@ -60,7 +60,7 @@ const HomeHeader = () => {
         <img src={iconPlus} alt='icon Plus' />
         New Invoice
       </Button>
-      {/* <InvoiceForm /> */}
+      <InvoiceForm />
     </HeaderContaienr>
   );
 };

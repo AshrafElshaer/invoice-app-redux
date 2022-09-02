@@ -15,8 +15,8 @@ export const BaseButton = styled.button`
   cursor: pointer;
   padding: 0.75rem;
   border-radius: 2rem;
-  img{
-    transition : all 0.3s ease-in-out;
+  img {
+    transition: all 0.3s ease-in-out;
   }
   ${mediaQuery.desktop} {
     font-size: 1rem;
@@ -26,7 +26,6 @@ export const PurpleButton = styled(BaseButton)`
   color: ${colors.clrWhite};
   background-color: ${colors.clrPurple};
   min-width: 100px;
-
 
   &:hover {
     background-color: ${colors.clrPurpleHover};

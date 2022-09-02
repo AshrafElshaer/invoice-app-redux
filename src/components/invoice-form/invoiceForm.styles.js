@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Input } from "../form-nput/formInput.styles";
 import { colors } from "../../styles/variables.styles";
 
 export const FromContainer = styled.div`
@@ -50,7 +49,8 @@ export const Title = styled.h5`
 export const FlexRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  // gap: 1rem;
+
 `;
 
 export const Select = styled.select`
@@ -68,3 +68,4 @@ export const Select = styled.select`
 
   background-color: ${({ theme }) => theme.clrBgSecondary};
 `;
+

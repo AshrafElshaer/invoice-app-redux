@@ -4,7 +4,7 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 150px;
+  // min-width: 150px;
   padding: 1rem;
 `;
 export const Label = styled.label`
@@ -16,6 +16,7 @@ export const Label = styled.label`
 export const Input = styled.input`
   all: unset;
   color: ${({ theme }) => theme.clrPrimary};
+  font-weight: bold;
   caret-color: ${colors.clrPurple};
   padding: 12px;
   outline: none;
@@ -41,4 +42,17 @@ export const Input = styled.input`
   &[type="number"] {
     -moz-appearance: textfield;
   }
+  // &[name='name'] {
+  //   width:200px;
+  // }
+  &[name="total"] {
+    background: none;
+    // width: 100px;
+  }
+  // &[name="quantity"] {
+  //   width: 48px;
+  // }
+  // &[name="price"] {
+  //   width: 100px;
+  // }
 `;

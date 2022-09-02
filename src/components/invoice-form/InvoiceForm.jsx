@@ -2,10 +2,11 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
-import FormInput from "../form-nput/FormInput";
+import IMAGES from "../../assets/images";
+import FormInput from "../form-input/FormInput";
 import Button from "../button/Button";
-
-import { InputWrapper, Label } from "../form-nput/formInput.styles";
+import { ReactComponent as DeleteIcon } from "../../assets/icon-delete.svg";
+import { InputWrapper, Label } from "../form-input/formInput.styles";
 import {
   FromContainer,
   Header,
@@ -17,6 +18,30 @@ import {
 
 const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
   const [formFields, setFormFields] = useState(invoice);
+  // useEffect(() => {
+  //   console.log(formFields);
+  // }, [formFields]);
+
+  const addNewItem = () => {
+    const newItem = {
+      name: "",
+      price: 0,
+      quantity: 1,
+      total: 0,
+    };
+    setFormFields({
+      ...formFields,
+      items: [...formFields.items, newItem],
+    });
+  };
+  const deleteItem = (index) =>
+    // console.log(index)
+    formFields.items.length > 1
+      ? setFormFields({
+          ...formFields,
+          items: formFields.items.filter((_, idx) => idx !== index),
+        })
+      : setFormFields({ ...formFields, items: [] });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -37,6 +62,21 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
     });
   };
 
+  const handleItemChange = (e, index) => {
+    const value = [...formFields.items];
+    if (e.target.type === "number") {
+      value[index][e.target.name] = Number(e.target.value);
+      value.forEach((item) => (item.total = item.quantity * item.price));
+    } else {
+      value[index][e.target.name] = e.target.value;
+    }
+
+    setFormFields({
+      ...formFields,
+      items: value,
+    });
+  };
+
   return createPortal(
     <FromContainer>
       <Overlay />
@@ -45,7 +85,6 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
       ) : (
         <Header>New Invoice</Header>
       )}
-      
 
       <Title>Bill From</Title>
 
@@ -158,7 +197,52 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
       />
 
       <div className='items-list'>
-        <h2>Items</h2>
+        <h2>Item List</h2>
+        {formFields.items.map((item, index) => (
+          <div key={index} className='list-container'>
+            <FormInput
+              label='Name'
+              name='name'
+              type='text'
+              value={item.name}
+              onChange={(e) => handleItemChange(e, index)}
+            />
+            <FormInput
+              label='Qty.'
+              name='quantity'
+              type='number'
+              min='1'
+              value={item.quantity}
+              onChange={(e) => handleItemChange(e, index)}
+            />
+            <FormInput
+              label='Price'
+              name='price'
+              type='number'
+              min='0'
+              value={item.price}
+              onChange={(e) => handleItemChange(e, index)}
+            />
+            <FormInput
+              label='Total'
+              name='total'
+              type='number'
+              value={item.total}
+              disabled={true}
+            />
+
+            {/* <img
+              onClick={() => deleteItem(index)}
+              src={IMAGES.iconDelete}
+              alt=''
+            /> */}
+            <DeleteIcon onClick={() => deleteItem(index)} />
+          </div>
+        ))}
+
+        <Button buttonType='black' onClick={addNewItem}>
+          + Add New Item
+        </Button>
       </div>
 
       <div style={{ display: "flex" }}>
