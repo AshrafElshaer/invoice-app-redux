@@ -50,7 +50,6 @@ export const FlexRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   // gap: 1rem;
-
 `;
 
 export const Select = styled.select`
@@ -67,5 +66,49 @@ export const Select = styled.select`
       : "border : none"};
 
   background-color: ${({ theme }) => theme.clrBgSecondary};
+
+  option {
+    font-weight: bold;
+  }
 `;
 
+export const ItemsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-inline: 1rem;
+
+  h2 {
+    color: ${({ theme }) => theme.clrSecondary};
+  }
+`;
+
+export const ListContainer = styled.div`
+  display: grid;
+  grid-template-columns: 200px 80px 120px 120px 24px;
+  justify-content: space-evenly;
+  align-items: center;
+
+  svg {
+    width: 25px;
+    height: 30px;
+    margin-top: 3rem;
+    cursor: pointer;
+    &:hover path {
+      fill: ${colors.clrRed};
+    }
+    path {
+      transform: scale(1.6);
+      transition: fill 0.2s ease-in-out;
+    }
+
+    @media screen and (max-width: 550px) {
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: 80px 120px 120px 80px;
+
+      &div:first-of-type {
+        grid-column: 1/ 6;
+      }
+    }
+  }
+`;

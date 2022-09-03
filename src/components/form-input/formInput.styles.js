@@ -42,17 +42,5 @@ export const Input = styled.input`
   &[type="number"] {
     -moz-appearance: textfield;
   }
-  // &[name='name'] {
-  //   width:200px;
-  // }
-  &[name="total"] {
-    background: none;
-    // width: 100px;
-  }
-  // &[name="quantity"] {
-  //   width: 48px;
-  // }
-  // &[name="price"] {
-  //   width: 100px;
-  // }
+ 
 `;

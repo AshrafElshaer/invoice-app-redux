@@ -2,7 +2,6 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
-import IMAGES from "../../assets/images";
 import FormInput from "../form-input/FormInput";
 import Button from "../button/Button";
 import { ReactComponent as DeleteIcon } from "../../assets/icon-delete.svg";
@@ -14,6 +13,8 @@ import {
   Select,
   FlexRow,
   Overlay,
+  ItemsList,
+  ListContainer,
 } from "./invoiceForm.styles";
 
 const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
@@ -24,9 +25,9 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
 
   const addNewItem = () => {
     const newItem = {
-      name: "",
+      name: '',
       price: 0,
-      quantity: 1,
+      quantity: 0,
       total: 0,
     };
     setFormFields({
@@ -66,7 +67,9 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
     const value = [...formFields.items];
     if (e.target.type === "number") {
       value[index][e.target.name] = Number(e.target.value);
-      value.forEach((item) => (item.total = item.quantity * item.price));
+      value.forEach(
+        (item) => (item.total = Number(item.quantity * item.price).toFixed(2))
+      );
     } else {
       value[index][e.target.name] = e.target.value;
     }
@@ -196,12 +199,12 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
         value={formFields.description}
       />
 
-      <div className='items-list'>
-        <h2>Item List</h2>
+      <ItemsList>
+        <h2>Items List</h2>
         {formFields.items.map((item, index) => (
-          <div key={index} className='list-container'>
+          <ListContainer key={index}>
             <FormInput
-              label='Name'
+              label='Item Name'
               name='name'
               type='text'
               value={item.name}
@@ -211,7 +214,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
               label='Qty.'
               name='quantity'
               type='number'
-              min='1'
+              // min='1'
               value={item.quantity}
               onChange={(e) => handleItemChange(e, index)}
             />
@@ -219,7 +222,6 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
               label='Price'
               name='price'
               type='number'
-              min='0'
               value={item.price}
               onChange={(e) => handleItemChange(e, index)}
             />
@@ -231,19 +233,14 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
               disabled={true}
             />
 
-            {/* <img
-              onClick={() => deleteItem(index)}
-              src={IMAGES.iconDelete}
-              alt=''
-            /> */}
             <DeleteIcon onClick={() => deleteItem(index)} />
-          </div>
+          </ListContainer>
         ))}
 
         <Button buttonType='black' onClick={addNewItem}>
           + Add New Item
         </Button>
-      </div>
+      </ItemsList>
 
       <div style={{ display: "flex" }}>
         <Button buttonType='black'>Discord</Button>
