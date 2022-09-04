@@ -11,21 +11,6 @@ const invoicesSlice = createSlice({
   name: "invoices",
   initialState,
   reducers: {
-    // ASYNC FROM FIRBASE DB
-    setInvoices: (state, { payload }) => {
-      state.invoices = payload;
-    },
-    addNewInvoice: (state, { payload }) => {
-      state.invoices.push(payload);
-    },
-    deleteInvoice: (state, { payload }) => {
-      state.invoices.filter((invoice) => invoice.id !== payload.id);
-    },
-    updateInvoice: (state, { payload }) => {
-      state.invoices.find((invoice) => invoice.id === payload.id);
-    },
-    
-
     filterBy: (state, { payload }) => {
       state.selectedFilterStatus = payload;
 
@@ -35,6 +20,23 @@ const invoicesSlice = createSlice({
             (invoice) => invoice.status === payload
           ));
     },
+    // ASYNC FROM FIRBASE DB
+    setInvoices: (state, { payload }) => {
+      state.invoices = payload;
+    },
+    addNewInvoice: (state, { payload }) => {
+      state.invoices.unshift(payload);
+      state.filteredInvoices = state.invoices
+    },
+    deleteInvoice: (state, { payload }) => {
+      state.invoices.filter((invoice) => invoice.id !== payload.id);
+    },
+    updateInvoice: (state, { payload }) => {
+      state.invoices.find((invoice) => invoice.id === payload.id);
+    },
+    
+
+   
     markAsPaid : (state, { payload })=>{
       
       const existingInvoce = state.invoices.find(invocie => invocie.id === payload);
@@ -48,6 +50,6 @@ const invoicesSlice = createSlice({
   },
 });
 
-export const { filterBy , markAsPaid} = invoicesSlice.actions;
+export const { filterBy , markAsPaid , addNewInvoice} = invoicesSlice.actions;
 
 export default invoicesSlice.reducer;

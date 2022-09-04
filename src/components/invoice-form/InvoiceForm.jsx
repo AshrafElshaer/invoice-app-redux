@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { todayDate } from "../../utils/helper/fotmatDate";
+import { useDispatch } from "react-redux";
+import { addNewInvoice, filterBy } from "../../features/invoices/invoicesSlice";
+import { addDays, todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
 import FormInput from "../form-input/FormInput";
 import Button from "../button/Button";
@@ -16,16 +18,21 @@ import {
   ItemsList,
   ListContainer,
 } from "./invoiceForm.styles";
+import { generateId } from "../../utils/helper/generateId";
 
-const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
+const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   const [formFields, setFormFields] = useState(invoice);
-  // useEffect(() => {
-  //   console.log(formFields);
-  // }, [formFields]);
+  const isNewInvoice = invoice.id.length === 0;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(formFields);
+  }, [formFields]);
 
   const addNewItem = () => {
     const newItem = {
-      name: '',
+      name: "",
       price: 0,
       quantity: 0,
       total: 0,
@@ -36,7 +43,6 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
     });
   };
   const deleteItem = (index) =>
-    // console.log(index)
     formFields.items.length > 1
       ? setFormFields({
           ...formFields,
@@ -66,9 +72,9 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
   const handleItemChange = (e, index) => {
     const value = [...formFields.items];
     if (e.target.type === "number") {
-      value[index][e.target.name] = Number(e.target.value);
-      value.forEach(
-        (item) => (item.total = Number(item.quantity * item.price).toFixed(2))
+      value[index][e.target.name] = e.target.value;
+      value[index].total = (value[index].quantity * value[index].price).toFixed(
+        2
       );
     } else {
       value[index][e.target.name] = e.target.value;
@@ -80,13 +86,40 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
     });
   };
 
+  const saveInvoice = () => {
+    switch (isNewInvoice) {
+      case true:
+        const totalInvoice = formFields.items.reduce((total, current) => {
+          return (total = total + Number(current.total));
+        }, 0);
+
+        dispatch(
+          addNewInvoice({
+            ...formFields,
+            id: generateId(),
+            paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
+            total: totalInvoice.toFixed(2),
+          })
+        );
+        toggleForm();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const cancelChanges = () => {
+    toggleForm();
+  };
+
   return createPortal(
     <FromContainer>
       <Overlay />
-      {invoice.id ? (
-        <Header>Edit # {invoice.id}</Header>
-      ) : (
+      {isNewInvoice ? (
         <Header>New Invoice</Header>
+      ) : (
+        <Header>Edit # {invoice.id}</Header>
       )}
 
       <Title>Bill From</Title>
@@ -241,11 +274,25 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate }) => {
           + Add New Item
         </Button>
       </ItemsList>
-
       <div style={{ display: "flex" }}>
-        <Button buttonType='black'>Discord</Button>
-        <Button buttonType='black'>Save as draft</Button>
-        <Button buttonType='purple'>Save & Send</Button>
+        {isNewInvoice ? (
+          <>
+            <Button buttonType='black' onClick={cancelChanges}>
+              Discord
+            </Button>
+            <Button buttonType='black'>Save as draft</Button>
+            <Button buttonType='purple' onClick={saveInvoice}>
+              Save & Send
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button buttonType='black' onClick={cancelChanges}>
+              Cancel
+            </Button>
+            <Button buttonType='purple'>Save Changes</Button>
+          </>
+        )}
       </div>
     </FromContainer>,
     document.getElementById("model-root")

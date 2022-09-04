@@ -4,7 +4,6 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  // min-width: 150px;
   padding: 1rem;
 `;
 export const Label = styled.label`

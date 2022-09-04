@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../utils/helper/fotmatDate";
@@ -20,10 +21,11 @@ import ItemPreview from "../../components/item-preview/ItemPreview";
 import InvoiceForm from "../../components/invoice-form/InvoiceForm";
 
 const InvoiceViewer = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const { invoiceId } = useParams();
   const dispatch = useDispatch();
   const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId);
-
+  
   const {
     id,
     description,
@@ -38,7 +40,9 @@ const InvoiceViewer = () => {
     total,
   } = invoice;
   const handleMarkAsPaid = () => dispatch(markAsPaid(id));
-
+  const toggleIsForm = () => setIsFormOpen(!isFormOpen);
+  const editInvoice = () => toggleIsForm()
+  
   return (
     <Container>
       <BackLink to='/'>
@@ -50,7 +54,7 @@ const InvoiceViewer = () => {
           Status <Status statusType={status} />
         </StatusWrapper>
         <ActionsWrapper>
-          <Button buttonType='black'>Edit</Button>
+          <Button buttonType='black' onClick={editInvoice}>Edit</Button>
           <Button buttonType='red'>Delete</Button>
           <Button buttonType='purple' onClick={handleMarkAsPaid}>
             Mark as Paid
@@ -125,8 +129,7 @@ const InvoiceViewer = () => {
           </Row>
         </tfoot>
       </InvoiceWrapper>
-
-      <InvoiceForm invoice={invoice} />
+      {isFormOpen && <InvoiceForm invoice={invoice}toggleForm={toggleIsForm} />}
     </Container>
   );
 };

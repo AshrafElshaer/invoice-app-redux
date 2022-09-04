@@ -81,7 +81,7 @@ export const Row = styled.tr`
   flex-direction: column;
   text-align: center;
   gap: 1rem;
-  // margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 
   @media (min-width: 600px) {
     flex-direction: row;

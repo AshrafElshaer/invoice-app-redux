@@ -77,6 +77,7 @@ export const ItemsList = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding-inline: 1rem;
+  margin-bottom:3rem;
 
   h2 {
     color: ${({ theme }) => theme.clrSecondary};
@@ -86,8 +87,16 @@ export const ItemsList = styled.div`
 export const ListContainer = styled.div`
   display: grid;
   grid-template-columns: 200px 80px 120px 120px 24px;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: 550px) {
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 80px 120px 120px 80px;
+
+    & div:first-of-type {
+      grid-column: 1/ 6;
+    }
+  }
 
   svg {
     width: 25px;
@@ -100,15 +109,6 @@ export const ListContainer = styled.div`
     path {
       transform: scale(1.6);
       transition: fill 0.2s ease-in-out;
-    }
-
-    @media screen and (max-width: 550px) {
-      grid-template-rows: repeat(2, 1fr);
-      grid-template-columns: 80px 120px 120px 80px;
-
-      &div:first-of-type {
-        grid-column: 1/ 6;
-      }
     }
   }
 `;
