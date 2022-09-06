@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch } from "react-redux";
-import { addNewInvoice, filterBy } from "../../features/invoices/invoicesSlice";
+import {
+  addNewInvoice,
+  updateInvoice,
+} from "../../features/invoices/invoicesSlice";
 import { addDays, todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
 import FormInput from "../form-input/FormInput";
@@ -23,12 +26,11 @@ import { generateId } from "../../utils/helper/generateId";
 const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   const [formFields, setFormFields] = useState(invoice);
   const isNewInvoice = invoice.id.length === 0;
-
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(formFields);
-  }, [formFields]);
+  // useEffect(() => {
+  //   console.log(formFields);
+  // }, [formFields]);
 
   const addNewItem = () => {
     const newItem = {
@@ -70,29 +72,30 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   };
 
   const handleItemChange = (e, index) => {
-    const value = [...formFields.items];
-    if (e.target.type === "number") {
-      value[index][e.target.name] = e.target.value;
-      value[index].total = (value[index].quantity * value[index].price).toFixed(
-        2
-      );
-    } else {
-      value[index][e.target.name] = e.target.value;
-    }
-
+    const { name, value } = e.target;
+    const items = [...formFields.items].map((item, idx) => {
+      if (idx === index) {
+        const updatedItem = { ...item, [name]: value };
+        const total = (updatedItem.quantity * updatedItem.price).toFixed(2);
+        return {
+          ...updatedItem,
+          total,
+        };
+      }
+      return item;
+    });
     setFormFields({
       ...formFields,
-      items: value,
+      items: items,
     });
   };
 
-  const saveInvoice = () => {
+  const saveInvoiceHandler = () => {
     switch (isNewInvoice) {
       case true:
         const totalInvoice = formFields.items.reduce((total, current) => {
           return (total = total + Number(current.total));
         }, 0);
-
         dispatch(
           addNewInvoice({
             ...formFields,
@@ -103,13 +106,38 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         );
         toggleForm();
         break;
-
+      case false:
+        dispatch(
+          updateInvoice({
+            ...formFields,
+            paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
+            status : formFields.status === 'draft' ? 'pending' : formFields.status,
+          })
+        );
+        toggleForm();
+        break;
       default:
         break;
     }
   };
 
-  const cancelChanges = () => {
+  const saveAsDraft = ()=>{
+    const totalInvoice = formFields.items.reduce((total, current) => {
+      return (total = total + Number(current.total));
+    }, 0);
+    dispatch(
+      addNewInvoice({
+        ...formFields,
+        id: generateId(),
+        status :'draft',
+        paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
+        total: totalInvoice.toFixed(2),
+      })
+    );
+    toggleForm();
+  }
+
+  const discordChanges = () => {
     toggleForm();
   };
 
@@ -247,7 +275,6 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               label='Qty.'
               name='quantity'
               type='number'
-              // min='1'
               value={item.quantity}
               onChange={(e) => handleItemChange(e, index)}
             />
@@ -263,7 +290,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               name='total'
               type='number'
               value={item.total}
-              disabled={true}
+              readOnly={true}
             />
 
             <DeleteIcon onClick={() => deleteItem(index)} />
@@ -277,20 +304,22 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
       <div style={{ display: "flex" }}>
         {isNewInvoice ? (
           <>
-            <Button buttonType='black' onClick={cancelChanges}>
+            <Button buttonType='black' onClick={discordChanges}>
               Discord
             </Button>
-            <Button buttonType='black'>Save as draft</Button>
-            <Button buttonType='purple' onClick={saveInvoice}>
+            <Button buttonType='black' onClick={saveAsDraft}>Save as draft</Button>
+            <Button buttonType='purple' onClick={saveInvoiceHandler}>
               Save & Send
             </Button>
           </>
         ) : (
           <>
-            <Button buttonType='black' onClick={cancelChanges}>
+            <Button buttonType='black' onClick={discordChanges}>
               Cancel
             </Button>
-            <Button buttonType='purple'>Save Changes</Button>
+            <Button buttonType='purple' onClick={saveInvoiceHandler}>
+              Save Changes
+            </Button>
           </>
         )}
       </div>

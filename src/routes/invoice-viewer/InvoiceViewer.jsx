@@ -5,8 +5,9 @@ import { formatDate } from "../../utils/helper/fotmatDate";
 import { markAsPaid } from "../../features/invoices/invoicesSlice";
 import { selectInvoices } from "../../features/invoices/invoces.selector";
 import Button from "../../components/button/Button";
-import IMAGES from "../../assets/images";
 import Status from "../../components/status/Status";
+import Confirm from "../../components/confirmation model/Confirm";
+import IMAGES from "../../assets/images";
 import { Container } from "../../styles/golobalStyles";
 import {
   HeaderContainer,
@@ -22,10 +23,11 @@ import InvoiceForm from "../../components/invoice-form/InvoiceForm";
 
 const InvoiceViewer = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const { invoiceId } = useParams();
   const dispatch = useDispatch();
   const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId);
-  
+
   const {
     id,
     description,
@@ -41,8 +43,9 @@ const InvoiceViewer = () => {
   } = invoice;
   const handleMarkAsPaid = () => dispatch(markAsPaid(id));
   const toggleIsForm = () => setIsFormOpen(!isFormOpen);
-  const editInvoice = () => toggleIsForm()
-  
+  const editInvoice = () => toggleIsForm();
+  const toggleConfirmModel = () => setIsConfirmationOpen(!isConfirmationOpen);
+
   return (
     <Container>
       <BackLink to='/'>
@@ -54,11 +57,34 @@ const InvoiceViewer = () => {
           Status <Status statusType={status} />
         </StatusWrapper>
         <ActionsWrapper>
-          <Button buttonType='black' onClick={editInvoice}>Edit</Button>
-          <Button buttonType='red'>Delete</Button>
-          <Button buttonType='purple' onClick={handleMarkAsPaid}>
-            Mark as Paid
-          </Button>
+          {status === "pending" && (
+            <>
+              <Button buttonType='black' onClick={editInvoice}>
+                Edit
+              </Button>
+              <Button buttonType='red' onClick={toggleConfirmModel}>
+                Delete
+              </Button>
+              <Button buttonType='purple' onClick={handleMarkAsPaid}>
+                Mark as Paid
+              </Button>
+            </>
+          )}
+          {status === "draft" && (
+            <>
+              <Button buttonType='black' onClick={editInvoice}>
+                Edit
+              </Button>
+              <Button buttonType='red' onClick={toggleConfirmModel}>
+                Delete
+              </Button>
+            </>
+          )}
+          {status === "paid" && (
+            <Button buttonType='red' onClick={toggleConfirmModel}>
+              Delete
+            </Button>
+          )}
         </ActionsWrapper>
       </HeaderContainer>
 
@@ -129,7 +155,12 @@ const InvoiceViewer = () => {
           </Row>
         </tfoot>
       </InvoiceWrapper>
-      {isFormOpen && <InvoiceForm invoice={invoice}toggleForm={toggleIsForm} />}
+      {isFormOpen && (
+        <InvoiceForm invoice={invoice} toggleForm={toggleIsForm} />
+      )}
+      {isConfirmationOpen && (
+        <Confirm invoice={invoice} closeModel={toggleConfirmModel} />
+      )}
     </Container>
   );
 };

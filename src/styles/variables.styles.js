@@ -23,7 +23,7 @@ export const darkTheme = {
   clrInvoiceBodyBg :'rgb(37,41,69)',
   clrInvoiceFootBg :'rgb(12,14,22)',
 // BLACK BUTTON COLORS
-  clrBtnPrimaryBg: "rgb(30, 33, 57)",
+  clrBtnPrimaryBg: "rgb(37,41,69)",
   clrBtnHoverPrimary: "rgb(30, 22, 37)",
   clrBtnHoverBg: "rgb(223, 227, 250)",
 };
