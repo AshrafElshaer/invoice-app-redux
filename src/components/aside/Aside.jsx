@@ -1,21 +1,36 @@
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectTheme, selectIsFormOpen } from "../../features/ui/ui.selectors";
-import { toggleTheme } from "../../features/ui/uiSilce";
+import {
+  selectTheme,
+  selectIsNotificationOpen,
+  selectNotificationMsg
+} from "../../features/ui/ui.selectors";
+import { closeNotification, toggleTheme } from "../../features/ui/uiSilce";
+
 
 import IMAGES from "../../assets/images";
+import Notification from "../notification model/Notification";
+
 import { AsideBarWrapper, Logo, ToggleSwitch, Profile } from "./aside.styles";
-import InvoiceForm from "../invoice-form/InvoiceForm";
 
 const Aside = () => {
   const { logo, avatar, iconMoon, iconSun } = IMAGES;
   const theme = useSelector(selectTheme);
-  const isFormOpen = useSelector(selectIsFormOpen);
+  const dispatch = useDispatch();
+  const isNotificationOpen = useSelector(selectIsNotificationOpen);
+  const notificationMsg = useSelector(selectNotificationMsg);
+  const hideNotification = ()=> isNotificationOpen && setTimeout(() => {
+    dispatch(closeNotification());
+  }, 4000);
 
-  const dipacth = useDispatch();
+  useEffect(()=>{
+    hideNotification()
+  },[isNotificationOpen])
+
 
   const handleToggle = () => {
-    dipacth(toggleTheme());
+    dispatch(toggleTheme());
   };
 
   return (
@@ -29,8 +44,7 @@ const Aside = () => {
         />
         <Profile src={avatar} alt='profile' />
       </AsideBarWrapper>
-      {/* {isFormOpen && <InvoiceForm />} */}
-
+      {isNotificationOpen && <Notification msg={notificationMsg} />}
       <Outlet />
     </>
   );

@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch } from "react-redux";
 import {
   addNewInvoice,
   updateInvoice,
 } from "../../features/invoices/invoicesSlice";
+import {notifyUser } from "../../features/ui/uiSilce";
+import { generateId } from "../../utils/helper/generateId";
 import { addDays, todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
 import FormInput from "../form-input/FormInput";
@@ -22,16 +24,12 @@ import {
   ListContainer,
   ButtonsWrapper,
 } from "./invoiceForm.styles";
-import { generateId } from "../../utils/helper/generateId";
 
 const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   const [formFields, setFormFields] = useState(invoice);
   const isNewInvoice = invoice.id.length === 0;
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   console.log(formFields);
-  // }, [formFields]);
+  const id = generateId();
 
   const addNewItem = () => {
     const newItem = {
@@ -97,15 +95,18 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         const totalInvoice = formFields.items.reduce((total, current) => {
           return (total = total + Number(current.total));
         }, 0);
+        
         dispatch(
           addNewInvoice({
             ...formFields,
-            id: generateId(),
+            id,
             paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
             total: totalInvoice.toFixed(2),
           })
         );
+        dispatch(notifyUser(`Invoice # ${id} has been successfully created .`));
         toggleForm();
+
         break;
       case false:
         dispatch(
@@ -116,6 +117,12 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               formFields.status === "draft" ? "pending" : formFields.status,
           })
         );
+        dispatch(
+          notifyUser(
+            `Invoice # ${formFields.id} has been successfully updated.`
+          )
+        );
+
         toggleForm();
         break;
       default:
@@ -130,11 +137,16 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
     dispatch(
       addNewInvoice({
         ...formFields,
-        id: generateId(),
+        id,
         status: "draft",
         paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
         total: totalInvoice.toFixed(2),
       })
+    );
+    dispatch(
+      notifyUser(
+        `Invoice # ${id} has been successfully saved as Draft.`
+      )
     );
     toggleForm();
   };

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Button from "../button/Button";
 import { colors } from "../../styles/variables.styles";
 
 export const FromContainer = styled.div`

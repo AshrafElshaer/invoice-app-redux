@@ -2,12 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   theme: "darkTheme",
-  models: {
-    isFormOpen: false,
-    isConfirmationModelOpen: false,
-    isNotificationOpen: false,
-    notificationText: "",
-  },
+  isNotificationOpen: false,
+  notificationMsg: "invoice has been sucessfully deleted",
 };
 
 const uiSlice = createSlice({
@@ -19,12 +15,20 @@ const uiSlice = createSlice({
         ? (state.theme = "lightTheme")
         : (state.theme = "darkTheme");
     },
-    toggleForm : (state) => {
-      state.models.isFormOpen = !state.models.isFormOpen
-    }
+    toggleForm: (state) => {
+      state.models.isFormOpen = !state.models.isFormOpen;
+    },
+    notifyUser: (state, { payload }) => {
+      state.isNotificationOpen = true;
+      state.notificationMsg = payload;
+    },
+    closeNotification: (state) => {
+      state.isNotificationOpen = false;
+      state.notificationMsg = "";
+    },
   },
 });
 
-export const { toggleTheme , toggleForm } = uiSlice.actions;
+export const { toggleTheme, toggleForm, notifyUser ,closeNotification} = uiSlice.actions;
 
 export default uiSlice.reducer;

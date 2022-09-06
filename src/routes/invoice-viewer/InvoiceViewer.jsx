@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../utils/helper/fotmatDate";
+import { notifyUser } from "../../features/ui/uiSilce";
 import { markAsPaid } from "../../features/invoices/invoicesSlice";
 import { selectInvoices } from "../../features/invoices/invoces.selector";
 import Button from "../../components/button/Button";
@@ -41,7 +42,14 @@ const InvoiceViewer = () => {
     items,
     total,
   } = invoice;
-  const handleMarkAsPaid = () => dispatch(markAsPaid(id));
+  const handleMarkAsPaid = () => {
+    dispatch(markAsPaid(id));
+    dispatch(
+      notifyUser(
+        `Invoice # ${id} has been successfully marked as paid.`
+      )
+    );
+  };
   const toggleIsForm = () => setIsFormOpen(!isFormOpen);
   const editInvoice = () => toggleIsForm();
   const toggleConfirmModel = () => setIsConfirmationOpen(!isConfirmationOpen);

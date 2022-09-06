@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteInvoice } from "../../features/invoices/invoicesSlice";
+import { notifyUser } from "../../features/ui/uiSilce";
 import Button from "../button/Button";
 
 import { ConfirmModel, Overlay } from "./confirm.styles";
@@ -11,7 +12,13 @@ const Confirm = ({ invoice, closeModel }) => {
   const navigate = useNavigate();
   const handleDeleteInvoice = () => {
     dispatch(deleteInvoice(invoice.id));
+    dispatch(
+      notifyUser(
+        `Invoice # ${invoice.id} has been successfully Deleted.`
+      )
+    );
     navigate("/");
+
   };
 
   return createPortal(
