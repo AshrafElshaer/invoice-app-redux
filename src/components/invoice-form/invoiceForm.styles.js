@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "../button/Button";
 import { colors } from "../../styles/variables.styles";
 
 export const FromContainer = styled.div`
@@ -112,3 +113,15 @@ export const ListContainer = styled.div`
     }
   }
 `;
+
+export const ButtonsWrapper = styled.div`
+  display:flex;
+  flex-direction: row-reverse;
+  aligh-items:center;
+  gap:0.5rem;
+  padding-inline:1rem;
+
+  button:nth-of-type(3){
+    margin-right:auto;
+  }
+`

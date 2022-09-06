@@ -20,6 +20,7 @@ import {
   Overlay,
   ItemsList,
   ListContainer,
+  ButtonsWrapper,
 } from "./invoiceForm.styles";
 import { generateId } from "../../utils/helper/generateId";
 
@@ -111,7 +112,8 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           updateInvoice({
             ...formFields,
             paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
-            status : formFields.status === 'draft' ? 'pending' : formFields.status,
+            status:
+              formFields.status === "draft" ? "pending" : formFields.status,
           })
         );
         toggleForm();
@@ -121,7 +123,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
     }
   };
 
-  const saveAsDraft = ()=>{
+  const saveAsDraft = () => {
     const totalInvoice = formFields.items.reduce((total, current) => {
       return (total = total + Number(current.total));
     }, 0);
@@ -129,13 +131,13 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
       addNewInvoice({
         ...formFields,
         id: generateId(),
-        status :'draft',
+        status: "draft",
         paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
         total: totalInvoice.toFixed(2),
       })
     );
     toggleForm();
-  }
+  };
 
   const discordChanges = () => {
     toggleForm();
@@ -301,28 +303,30 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           + Add New Item
         </Button>
       </ItemsList>
-      <div style={{ display: "flex" }}>
+      <ButtonsWrapper>
         {isNewInvoice ? (
           <>
-            <Button buttonType='black' onClick={discordChanges}>
-              Discord
-            </Button>
-            <Button buttonType='black' onClick={saveAsDraft}>Save as draft</Button>
             <Button buttonType='purple' onClick={saveInvoiceHandler}>
               Save & Send
+            </Button>
+            <Button buttonType='black' onClick={saveAsDraft}>
+              Save as draft
+            </Button>
+            <Button buttonType='black' onClick={discordChanges}>
+              Discord
             </Button>
           </>
         ) : (
           <>
-            <Button buttonType='black' onClick={discordChanges}>
-              Cancel
-            </Button>
             <Button buttonType='purple' onClick={saveInvoiceHandler}>
               Save Changes
             </Button>
+            <Button buttonType='black' onClick={discordChanges}>
+              Cancel
+            </Button>
           </>
         )}
-      </div>
+      </ButtonsWrapper>
     </FromContainer>,
     document.getElementById("model-root")
   );
