@@ -1,11 +1,12 @@
 import { createPortal } from "react-dom";
+import { NotifacationWrapper, Progress } from "./notification.styles";
 
 const Notification = ({ msg }) => {
   return createPortal(
-    <div className='notification'>
+    <NotifacationWrapper>
       <p>{msg}</p>
-      <div className='progress' />
-    </div>,
+      <Progress />
+    </NotifacationWrapper>,
     document.getElementById("model-root")
   );
 };

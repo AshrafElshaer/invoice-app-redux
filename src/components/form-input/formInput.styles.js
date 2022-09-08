@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../styles/variables.styles";
 export const InputWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   flex: 1;
   padding: 1rem;
 `;
@@ -10,6 +10,12 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.clrSecondary};
   font-size: 1rem;
   margin-block: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 0.5rem;
+  span {
+    display: none;
+  }
 `;
 
 export const Input = styled.input`
@@ -29,6 +35,19 @@ export const Input = styled.input`
   &:focus {
     outline: none;
   }
+  ${({ isFocused }) =>
+  isFocused === "true"
+    && `&:invalid {
+      border: 1px solid red;
+    }
+    &:invalid ~ label {
+      color: red;
+      span {
+        display: block;
+      }
+    }`
+    };
+  
 
   /* Chrome, Safari, Edge, Opera */
   &::-webkit-outer-spin-button,
@@ -41,5 +60,4 @@ export const Input = styled.input`
   &[type="number"] {
     -moz-appearance: textfield;
   }
- 
 `;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../styles/variables.styles";
 
-export const FromContainer = styled.div`
+export const FromContainer = styled.form`
   width: 100%;
   background-color: ${({ theme }) => theme.clrBgPrimary};
   position: absolute;
@@ -9,7 +9,6 @@ export const FromContainer = styled.div`
   top: 4.5rem;
   z-index: 1000;
   border-radius: 8px;
-
   @media screen and (min-width: 620px) {
     width: 616px;
   }
@@ -77,7 +76,7 @@ export const ItemsList = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding-inline: 1rem;
-  margin-bottom:3rem;
+  margin-bottom: 3rem;
 
   h2 {
     color: ${({ theme }) => theme.clrSecondary};
@@ -114,13 +113,15 @@ export const ListContainer = styled.div`
 `;
 
 export const ButtonsWrapper = styled.div`
-  display:flex;
+  width: 100%;
+  display: flex;
   flex-direction: row-reverse;
-  aligh-items:center;
-  gap:0.5rem;
-  padding-inline:1rem;
+  aligh-items: center;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+  margin-bottom: 1rem;
 
-  button:nth-of-type(3){
-    margin-right:auto;
+  button:nth-of-type(3) {
+    margin-right: auto;
   }
-`
+`;

@@ -5,7 +5,7 @@ import {
   addNewInvoice,
   updateInvoice,
 } from "../../features/invoices/invoicesSlice";
-import {notifyUser } from "../../features/ui/uiSilce";
+import { notifyUser } from "../../features/ui/uiSilce";
 import { generateId } from "../../utils/helper/generateId";
 import { addDays, todayDate } from "../../utils/helper/fotmatDate";
 import { invoiceFormTemplate } from "../../utils/helper/invoice-form-template";
@@ -27,6 +27,7 @@ import {
 
 const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   const [formFields, setFormFields] = useState(invoice);
+  const [isError, setIsError] = useState(false);
   const isNewInvoice = invoice.id.length === 0;
   const dispatch = useDispatch();
   const id = generateId();
@@ -89,13 +90,18 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
     });
   };
 
-  const saveInvoiceHandler = () => {
+  const saveInvoiceHandler = (e) => {
+    e.preventDefault();
+    if (formFields.items.length === 0) {
+      setIsError(true);
+      return;
+    }
+
+    const totalInvoice = formFields.items.reduce((total, current) => {
+      return (total = total + Number(current.total));
+    }, 0);
     switch (isNewInvoice) {
       case true:
-        const totalInvoice = formFields.items.reduce((total, current) => {
-          return (total = total + Number(current.total));
-        }, 0);
-        
         dispatch(
           addNewInvoice({
             ...formFields,
@@ -115,6 +121,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
             paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
             status:
               formFields.status === "draft" ? "pending" : formFields.status,
+            total: totalInvoice.toFixed(2),
           })
         );
         dispatch(
@@ -144,9 +151,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
       })
     );
     dispatch(
-      notifyUser(
-        `Invoice # ${id} has been successfully saved as Draft.`
-      )
+      notifyUser(`Invoice # ${id} has been successfully saved as Draft.`)
     );
     toggleForm();
   };
@@ -156,7 +161,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   };
 
   return createPortal(
-    <FromContainer>
+    <FromContainer onSubmit={saveInvoiceHandler}>
       <Overlay />
       {isNewInvoice ? (
         <Header>New Invoice</Header>
@@ -172,6 +177,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='street'
         onChange={handleSenderChange}
         value={formFields.senderAddress.street}
+        required
       />
       <FlexRow>
         <FormInput
@@ -180,6 +186,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='city'
           onChange={handleSenderChange}
           value={formFields.senderAddress.city}
+          required
         />
         <FormInput
           label='Post Code'
@@ -187,6 +194,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='postCode'
           onChange={handleSenderChange}
           value={formFields.senderAddress.postCode}
+          required
         />
         <FormInput
           label='Counrty'
@@ -194,6 +202,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='country'
           onChange={handleSenderChange}
           value={formFields.senderAddress.country}
+          required
         />
       </FlexRow>
 
@@ -205,6 +214,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='clientName'
         onChange={handleChange}
         value={formFields.clientName}
+        required
       />
       <FormInput
         label='Client Email'
@@ -212,6 +222,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='clientEmail'
         onChange={handleChange}
         value={formFields.clientEmail}
+        required
       />
       <FormInput
         label='Street Address'
@@ -219,6 +230,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='street'
         onChange={handleClientChange}
         value={formFields.clientAddress.street}
+        required
       />
       <FlexRow>
         <FormInput
@@ -227,6 +239,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='city'
           onChange={handleClientChange}
           value={formFields.clientAddress.city}
+          required
         />
         <FormInput
           label='Post Code'
@@ -234,6 +247,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='postCode'
           onChange={handleClientChange}
           value={formFields.clientAddress.postCode}
+          required
         />
         <FormInput
           label='Counrty'
@@ -241,6 +255,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='country'
           onChange={handleClientChange}
           value={formFields.clientAddress.country}
+          required
         />
       </FlexRow>
       <FlexRow>
@@ -249,11 +264,10 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           type='date'
           name='createdAt'
           onChange={handleChange}
-          min={todayDate}
+          min={isNewInvoice ? todayDate : formFields.createdAt}
           value={formFields.createdAt}
         />
         <InputWrapper>
-          <Label htmlFor='paymentTerms'>Payment Terms</Label>
           <Select
             name='paymentTerms'
             onChange={handleChange}
@@ -263,6 +277,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
             <option value='14'>Next 14 Days</option>
             <option value='30'>Next 30 Days</option>
           </Select>
+          <Label htmlFor='paymentTerms'>Payment Terms</Label>
         </InputWrapper>
       </FlexRow>
 
@@ -272,6 +287,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='description'
         onChange={handleChange}
         value={formFields.description}
+        required
       />
 
       <ItemsList>
@@ -284,20 +300,25 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               type='text'
               value={item.name}
               onChange={(e) => handleItemChange(e, index)}
+              required
             />
             <FormInput
               label='Qty.'
               name='quantity'
               type='number'
               value={item.quantity}
+              min='1'
               onChange={(e) => handleItemChange(e, index)}
+              required
             />
             <FormInput
               label='Price'
               name='price'
               type='number'
+              min='1'
               value={item.price}
               onChange={(e) => handleItemChange(e, index)}
+              required
             />
             <FormInput
               label='Total'
@@ -311,14 +332,19 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           </ListContainer>
         ))}
 
-        <Button buttonType='black' onClick={addNewItem}>
+        <Button buttonType='black' type='button' onClick={addNewItem}>
           + Add New Item
         </Button>
       </ItemsList>
+      {isError && (
+        <p style={{ color: "red" }}>
+          - All fields must be added <br /> - An item must be added{" "}
+        </p>
+      )}
       <ButtonsWrapper>
         {isNewInvoice ? (
           <>
-            <Button buttonType='purple' onClick={saveInvoiceHandler}>
+            <Button buttonType='purple' type='submit'>
               Save & Send
             </Button>
             <Button buttonType='black' onClick={saveAsDraft}>
@@ -330,7 +356,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           </>
         ) : (
           <>
-            <Button buttonType='purple' onClick={saveInvoiceHandler}>
+            <Button buttonType='purple' type='submit'>
               Save Changes
             </Button>
             <Button buttonType='black' onClick={discordChanges}>

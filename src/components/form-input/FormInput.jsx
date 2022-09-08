@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectTheme } from "../../features/ui/ui.selectors";
 
@@ -6,11 +6,27 @@ import { Label, Input, InputWrapper } from "./formInput.styles";
 
 const FormInput = ({ label, ...otherProps }) => {
   const id = useId();
-  const selectedTheme = useSelector(selectTheme)
+  const selectedTheme = useSelector(selectTheme);
+  const [isFocused, setIsFocused] = useState(false);
+  const handleBlur = () => setIsFocused(true);
+
   return (
     <InputWrapper>
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} {...otherProps} selectedTheme={selectedTheme}/>
+      <Input
+        id={`${id}-${label}`}
+        {...otherProps}
+        selectedTheme={selectedTheme}
+        isFocused={isFocused.toString()}
+        onBlur={handleBlur}
+      />
+      <Label htmlFor={`${id}-${label}`}>
+        {label}
+        {label !== "Item Name" & label !== 'Qty.' & label !== 'Price' ? (
+          <span>
+            {label.includes("Email") ? "Invalid Email" : "Can't be empty"}
+          </span>
+        ):''}
+      </Label>
     </InputWrapper>
   );
 };
