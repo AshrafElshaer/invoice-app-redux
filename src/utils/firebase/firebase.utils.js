@@ -1,3 +1,4 @@
+
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -5,8 +6,11 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
+
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpzc0_m6keSG2qUUoFTY2vD09stKfxlBE",
@@ -18,3 +22,18 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
+
+googleProvider.setCustomParameters({
+  prompt: "select_account",
+});
+
+export const createNewUser = (email, password) =>
+  createUserWithEmailAndPassword(auth, email, password);
+
+export const loginWithEmail = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
