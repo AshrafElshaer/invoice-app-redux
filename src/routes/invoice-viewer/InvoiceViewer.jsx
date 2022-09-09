@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/helper/fotmatDate";
 import { notifyUser } from "../../features/ui/uiSilce";
 import { markAsPaid } from "../../features/invoices/invoicesSlice";
@@ -21,13 +21,15 @@ import {
 } from "./invoiceViewer.styles";
 import ItemPreview from "../../components/item-preview/ItemPreview";
 import InvoiceForm from "../../components/invoice-form/InvoiceForm";
+import { useEffect } from "react";
 
 const InvoiceViewer = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const { invoiceId } = useParams();
   const dispatch = useDispatch();
-  const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId);
+  const navigate = useNavigate();
+  const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId) ;
 
   const {
     id,
@@ -42,6 +44,10 @@ const InvoiceViewer = () => {
     items,
     total,
   } = invoice;
+
+  useEffect(()=>{
+    !invoice && navigate('*')
+  },[])
   const handleMarkAsPaid = () => {
     dispatch(markAsPaid(id));
     dispatch(

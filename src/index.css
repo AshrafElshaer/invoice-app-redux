@@ -1,9 +1,34 @@
-/* input:invalid ~ label {
-  color: red;
+/* .form {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
 }
-input:invalid ~ label span {
-  display: block;
+.form form {
+  width: 70%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-input:invalid {
-  border: 1px solid red;
+.form form .link,
+.form form h2 {
+  text-align: center;
+  color: white;
+}
+.form form .link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form form .link h4 {
+  margin-inline: 0.5rem;
+  cursor: pointer;
+}
+.form form div {
+  padding: 0;
+}
+.form form button {
+  flex: 1;
+  margin-block: 2rem;
 } */
