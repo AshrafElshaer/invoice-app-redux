@@ -11,12 +11,9 @@ import {
 
 import {
   getFirestore,
-  collection,
   doc,
   setDoc,
   getDoc,
-  getDocs,
-  addDoc,
   updateDoc,
   arrayUnion,
   arrayRemove,
@@ -94,14 +91,20 @@ export const fetchInvoicesFromDb = async (uid) => {
   return docSnapshot.data().Invoices;
 };
 
-export const createNewInvoice = async (invoiceToAdd , userId) => {
-  
-    const userDocRef = doc(db, "users", userId);
-    return await updateDoc(userDocRef, { 'Invoices':arrayUnion(invoiceToAdd) })
-
+export const createNewInvoice = async (invoiceToAdd, userId) => {
+  const userDocRef = doc(db, "users", userId);
+  return await updateDoc(userDocRef, { Invoices: arrayUnion(invoiceToAdd) });
 };
 
-export const deleteInvoiceFromDb = async(invoiceToDelete , userId)=>{
+export const updateInvoiceToDb = async (invoice, invoiceToUpdate, userId) => {
   const userDocRef = doc(db, "users", userId);
-  return await updateDoc(userDocRef, { 'Invoices':arrayRemove(invoiceToDelete) }).then(console.log('deleted'))
-}
+  await updateDoc(userDocRef, { Invoices: arrayRemove(invoice) });
+  return await updateDoc(userDocRef, { Invoices: arrayUnion(invoiceToUpdate) });
+};
+
+export const deleteInvoiceFromDb = async (invoiceToDelete, userId) => {
+  const userDocRef = doc(db, "users", userId);
+  return await updateDoc(userDocRef, {
+    Invoices: arrayRemove(invoiceToDelete),
+  });
+};

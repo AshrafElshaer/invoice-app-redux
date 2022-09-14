@@ -8,7 +8,6 @@ import thunk from "redux-thunk";
 
 export const store = configureStore({
   middleware: [
-    logger,
     ...getDefaultMiddleware({ thunk: true, serializableCheck: false }),
   ],
   reducer: {

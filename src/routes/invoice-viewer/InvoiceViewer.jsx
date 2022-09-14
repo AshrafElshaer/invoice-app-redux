@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams , useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/helper/fotmatDate";
 import { notifyUser } from "../../features/ui/uiSilce";
-import { markAsPaid } from "../../features/invoices/invoicesSlice";
+import { updateInvoice } from "../../features/invoices/invoicesSlice";
 import { selectInvoices } from "../../features/invoices/invoces.selector";
 import Button from "../../components/button/Button";
 import Status from "../../components/status/Status";
@@ -22,6 +22,7 @@ import {
 import ItemPreview from "../../components/item-preview/ItemPreview";
 import InvoiceForm from "../../components/invoice-form/InvoiceForm";
 import { useEffect } from "react";
+import { selectUser } from "../../features/user/user.selectors";
 
 const InvoiceViewer = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -29,8 +30,11 @@ const InvoiceViewer = () => {
   const { invoiceId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId) ;
-
+  const user = useSelector(selectUser);
+  const invoice = useSelector(selectInvoices).find((el) => el.id === invoiceId);
+  useEffect(() => {
+    invoice === undefined && navigate("/");
+  });
   const {
     id,
     description,
@@ -45,15 +49,19 @@ const InvoiceViewer = () => {
     total,
   } = invoice;
 
-  useEffect(()=>{
-    !invoice && navigate('*')
-  },[])
   const handleMarkAsPaid = () => {
-    dispatch(markAsPaid(id));
     dispatch(
-      notifyUser(
-        `Invoice # ${id} has been successfully marked as paid.`
-      )
+      updateInvoice({
+        invoice,
+        payload: {
+          ...invoice,
+          status: "paid",
+        },
+        userId: user.uid,
+      })
+    );
+    dispatch(
+      notifyUser(`Invoice # ${id} has been successfully marked as paid.`)
     );
   };
   const toggleIsForm = () => setIsFormOpen(!isFormOpen);
