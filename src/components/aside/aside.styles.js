@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { VscSignOut } from "react-icons/vsc";
 
 import { colors } from "../../styles/variables.styles";
 import { mediaQuery } from "../../styles/mediaQuerya.styles";
@@ -14,7 +15,7 @@ export const AsideBarWrapper = styled.aside`
   align-items: center;
   border-bottom-right-radius: 20px;
   background-color: ${colors.clrAsidBarBg};
-  z-index:2;
+  z-index: 2;
 
   ${mediaQuery.desktop} {
     width: 72px;
@@ -23,6 +24,8 @@ export const AsideBarWrapper = styled.aside`
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0px;
   }
+
+  
 `;
 
 export const Logo = styled.img`
@@ -44,7 +47,13 @@ export const ToggleSwitch = styled.img`
     margin-block: 1.5rem;
   }
 `;
+export const SignOutBtn = styled(VscSignOut)`
+fill:${colors.clrPurple};
+width:1.5rem;
+height:1.5rem;
+cursor: pointer;
 
+`
 export const Profile = styled.img`
   width: 72px;
   margin-inline: 1rem;

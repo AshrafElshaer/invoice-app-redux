@@ -20,3 +20,8 @@ export const selectInvoicesCount = createSelector(
   [selectInvoicesReducer],
   (invoices) => invoices.filteredInvoices.length
 );
+export const selectfetchStatus = createSelector(
+  [selectInvoicesReducer],
+  (invoices) => invoices.fetchStatus
+ 
+);

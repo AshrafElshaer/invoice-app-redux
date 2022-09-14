@@ -4,30 +4,54 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectTheme,
   selectIsNotificationOpen,
-  selectNotificationMsg
+  selectNotificationMsg,
 } from "../../features/ui/ui.selectors";
-import { closeNotification, toggleTheme } from "../../features/ui/uiSilce";
-
+import {
+  closeNotification,
+  notifyUser,
+  toggleTheme,
+} from "../../features/ui/uiSilce";
+import { signOut } from "../../features/user/userSlice";
+import { selectUser } from "../../features/user/user.selectors";
+import {
+  signOutUser,
+  fetchInvoicesFromDb,
+} from "../../utils/firebase/firebase.utils";
 
 import IMAGES from "../../assets/images";
 import Notification from "../notification model/Notification";
 
-import { AsideBarWrapper, Logo, ToggleSwitch, Profile } from "./aside.styles";
+import {
+  AsideBarWrapper,
+  Logo,
+  ToggleSwitch,
+  Profile,
+  SignOutBtn,
+} from "./aside.styles";
 
 const Aside = () => {
   const { logo, avatar, iconMoon, iconSun } = IMAGES;
   const theme = useSelector(selectTheme);
-  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const isNotificationOpen = useSelector(selectIsNotificationOpen);
   const notificationMsg = useSelector(selectNotificationMsg);
-  const hideNotification = ()=> isNotificationOpen && setTimeout(() => {
-    dispatch(closeNotification());
-  }, 4000);
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    signOutUser()
+      .then(dispatch(signOut()))
+      .then(dispatch(notifyUser("See You Later 👋")));
+  };
+  const hideNotification = () =>
+    isNotificationOpen &&
+    setTimeout(() => {
+      dispatch(closeNotification());
+    }, 4000);
 
-  useEffect(()=>{
-    hideNotification()
-  },[isNotificationOpen])
-
+  useEffect(() => {
+    hideNotification();
+    
+    
+  }, [isNotificationOpen]);
 
   const handleToggle = () => {
     dispatch(toggleTheme());
@@ -42,7 +66,11 @@ const Aside = () => {
           alt='theme toggle'
           onClick={handleToggle}
         />
-        <Profile src={avatar} alt='profile' />
+        {user && <SignOutBtn onClick={handleSignOut}>Log Out</SignOutBtn>}
+        <Profile
+          src={user ? (user.photoURL ? user.photoURL : avatar) : avatar}
+          alt='profile'
+        />
       </AsideBarWrapper>
       {isNotificationOpen && <Notification msg={notificationMsg} />}
       <Outlet />

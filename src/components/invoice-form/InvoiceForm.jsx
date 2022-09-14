@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addNewInvoice,
   updateInvoice,
 } from "../../features/invoices/invoicesSlice";
+import { selectUser } from "../../features/user/user.selectors";
 import { notifyUser } from "../../features/ui/uiSilce";
 import { generateId } from "../../utils/helper/generateId";
 import { addDays, todayDate } from "../../utils/helper/fotmatDate";
@@ -24,10 +25,12 @@ import {
   ListContainer,
   ButtonsWrapper,
 } from "./invoiceForm.styles";
+import { createNewInvoice } from "../../utils/firebase/firebase.utils";
 
 const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
   const [formFields, setFormFields] = useState(invoice);
   const [isError, setIsError] = useState(false);
+  const user = useSelector(selectUser);
   const isNewInvoice = invoice.id.length === 0;
   const dispatch = useDispatch();
   const id = generateId();
@@ -104,12 +107,19 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
       case true:
         dispatch(
           addNewInvoice({
-            ...formFields,
-            id,
-            paymentDue: addDays(formFields.createdAt, formFields.paymentTerms),
-            total: totalInvoice.toFixed(2),
+            payload: {
+              ...formFields,
+              id,
+              paymentDue: addDays(
+                formFields.createdAt,
+                formFields.paymentTerms
+              ),
+              total: totalInvoice.toFixed(2),
+            },
+            userId: user.uid,
           })
         );
+     
         dispatch(notifyUser(`Invoice # ${id} has been successfully created .`));
         toggleForm();
 
@@ -177,7 +187,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='street'
         onChange={handleSenderChange}
         value={formFields.senderAddress.street}
-        required
+        // required
       />
       <FlexRow>
         <FormInput
@@ -186,7 +196,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='city'
           onChange={handleSenderChange}
           value={formFields.senderAddress.city}
-          required
+          // required
         />
         <FormInput
           label='Post Code'
@@ -194,15 +204,15 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='postCode'
           onChange={handleSenderChange}
           value={formFields.senderAddress.postCode}
-          required
+          // required
         />
         <FormInput
-          label='Counrty'
+          label='Country'
           type='text'
           name='country'
           onChange={handleSenderChange}
           value={formFields.senderAddress.country}
-          required
+          // required
         />
       </FlexRow>
 
@@ -214,7 +224,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='clientName'
         onChange={handleChange}
         value={formFields.clientName}
-        required
+        // required
       />
       <FormInput
         label='Client Email'
@@ -222,7 +232,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='clientEmail'
         onChange={handleChange}
         value={formFields.clientEmail}
-        required
+        // required
       />
       <FormInput
         label='Street Address'
@@ -230,7 +240,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='street'
         onChange={handleClientChange}
         value={formFields.clientAddress.street}
-        required
+        // required
       />
       <FlexRow>
         <FormInput
@@ -239,7 +249,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='city'
           onChange={handleClientChange}
           value={formFields.clientAddress.city}
-          required
+          // required
         />
         <FormInput
           label='Post Code'
@@ -247,7 +257,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='postCode'
           onChange={handleClientChange}
           value={formFields.clientAddress.postCode}
-          required
+          // required
         />
         <FormInput
           label='Counrty'
@@ -255,7 +265,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
           name='country'
           onChange={handleClientChange}
           value={formFields.clientAddress.country}
-          required
+          // required
         />
       </FlexRow>
       <FlexRow>
@@ -287,7 +297,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
         name='description'
         onChange={handleChange}
         value={formFields.description}
-        required
+        // required
       />
 
       <ItemsList>
@@ -300,7 +310,7 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               type='text'
               value={item.name}
               onChange={(e) => handleItemChange(e, index)}
-              required
+              // required
             />
             <FormInput
               label='Qty.'
@@ -309,16 +319,16 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
               value={item.quantity}
               min='1'
               onChange={(e) => handleItemChange(e, index)}
-              required
+              // required
             />
             <FormInput
               label='Price'
               name='price'
               type='number'
-              min='1'
+              // min='1'
               value={item.price}
               onChange={(e) => handleItemChange(e, index)}
-              required
+              // required
             />
             <FormInput
               label='Total'

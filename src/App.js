@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/variables.styles";
 import { selectTheme } from "./features/ui/ui.selectors";
-import { selectUser } from "./features/user/user.selectors";
 
 import GlobalStyles from "./styles/golobalStyles";
 import Aside from "./components/aside/Aside";
@@ -15,14 +14,25 @@ import InvoiceViewer from "./routes/invoice-viewer/InvoiceViewer";
 import { AppWrapper } from "./app.styles";
 import Home from "./routes/home/Home";
 import NoMatch from "./components/NoMatch";
+import { onAuthChange } from "./utils/firebase/firebase.utils";
+import { loginUser } from "./features/user/userSlice";
+import { fetchinvoices } from "./features/invoices/invoicesSlice";
 
 const App = () => {
   const theme = useSelector(selectTheme);
-  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    !user && navigate("/auth");
+    const unsubscribe = onAuthChange((user) => {
+      if(user){
+        dispatch(loginUser(user))
+        dispatch(fetchinvoices(user.uid))
+      }  
+       else
+        navigate("/auth");
+    });
+    return unsubscribe;
   }, []);
 
   return (

@@ -19,12 +19,12 @@ const uiSlice = createSlice({
       state.models.isFormOpen = !state.models.isFormOpen;
     },
     notifyUser: (state, { payload }) => {
-      state.isNotificationOpen = true;
       state.notificationMsg = payload;
+      state.isNotificationOpen = true;
     },
     closeNotification: (state) => {
-      state.isNotificationOpen = false;
       state.notificationMsg = "";
+      state.isNotificationOpen = false;
     },
   },
 });

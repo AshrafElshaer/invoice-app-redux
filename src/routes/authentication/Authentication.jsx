@@ -9,6 +9,8 @@ import {
   signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 import { loginUser } from "../../features/user/userSlice";
+import { notifyUser } from "../../features/ui/uiSilce";
+import { fetchinvoices,} from "../../features/invoices/invoicesSlice";
 import FormInput from "../../components/form-input/FormInput";
 import Button from "../../components/button/Button";
 
@@ -16,7 +18,6 @@ import {
   AuthenticationWrapper,
   SwitchAuthWrapper,
 } from "./authentication.styles";
-import { notifyUser } from "../../features/ui/uiSilce";
 
 const Authentication = () => {
   const [isLogIn, setIsLogIn] = useState(true);
@@ -36,14 +37,15 @@ const Authentication = () => {
     switch (isLogIn) {
       case true:
         loginWithEmail(email, password)
-          .then((userCredential) => {
-            dispatch(loginUser(userCredential.user));
+          .then((userAuth) => {
+            dispatch(loginUser(userAuth));
+            // dispatch(fetchinvoices(userAuth.uid));
             dispatch(
               notifyUser(
                 `Welcome Back ${
-                  userCredential.user.displayName
-                    ? userCredential.user.displayName
-                    : userCredential.user.email
+                  userAuth.displayName
+                    ? userAuth.displayName
+                    : userAuth.email
                 } 👋`
               )
             );
@@ -66,17 +68,24 @@ const Authentication = () => {
                 dispatch(notifyUser(errorMessage));
             }
           });
+        setEmail("");
+        setPassword("");
         break;
       case false:
+        if (password !== confirmPassword) {
+          dispatch(notifyUser("Password Don't Match Confirm Password"));
+          setConfirmPassword("");
+          return;
+        }
         createNewUser(email, password)
           .then((userCredential) => {
-            dispatch(loginUser(userCredential.user));
+            dispatch(loginUser(userCredential));
             dispatch(
               notifyUser(
                 `Welcome  ${
-                  userCredential.user.displayName
-                    ? userCredential.user.displayName
-                    : userCredential.user.email
+                  userCredential.displayName
+                    ? userCredential.displayName
+                    : userCredential.email
                 } 👋`
               )
             );
@@ -84,28 +93,29 @@ const Authentication = () => {
           })
           .catch((error) => dispatch(notifyUser(error.message)));
         break;
+      default:
+        return;
     }
   };
-  const signInWithGoogle = () =>
-    signInWithGooglePopup()
-      .then((userCredential) => {
-        dispatch(loginUser(userCredential.user));
-        dispatch(
-          notifyUser(
-            `Welcome Back ${
-              userCredential.user.displayName
-                ? userCredential.user.displayName
-                : userCredential.user.email
-            } 👋`
-          )
-        );
-        navigate("/");
-      })
-      .catch((error) => {
-        if (error.message === "Firebase: Error (auth/popup-closed-by-user).")
-          return;
-        dispatch(notifyUser(error.message));
-      });
+  const signInWithGoogle = async () => {
+    try {
+      const userAuth = await signInWithGooglePopup();
+      dispatch(loginUser(userAuth));
+      dispatch(fetchinvoices(userAuth.uid));
+      dispatch(
+        notifyUser(
+          `Welcome Back ${
+            userAuth.displayName ? userAuth.displayName : userAuth.email
+          } 👋`
+        )
+      );
+      navigate("/");
+    } catch (error) {
+      if (error.message === "Firebase: Error (auth/popup-closed-by-user).")
+        return;
+      dispatch(notifyUser(error.message));
+    }
+  };
 
   return (
     <AuthenticationWrapper>

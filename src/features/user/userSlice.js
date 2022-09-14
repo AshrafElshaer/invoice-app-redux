@@ -9,15 +9,21 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, { payload }) => {
-      state.userInfo = payload;
+      const { uid, email, displayName, photoURL } = payload;
+      state.userInfo = {
+        uid,
+        email,
+        displayName,
+        photoURL,
+      };
+
     },
     signOut: (state) => {
       state.userInfo = null;
     },
-    
   },
 });
 
-export const { loginUser , signOut} = userSlice.actions;
+export const { loginUser, signOut } = userSlice.actions;
 
 export default userSlice.reducer;

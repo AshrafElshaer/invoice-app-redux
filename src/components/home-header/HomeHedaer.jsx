@@ -25,7 +25,9 @@ const HomeHeader = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const toggleDropdown = () => setIsFilterOpen(!isFilterOpen);
-  const toggleIsForm = () => setIsFormOpen(!isFormOpen);
+  const toggleIsForm = () => {
+    setIsFormOpen(!isFormOpen);
+  };
 
   const invoicesCount = useSelector(selectInvoicesCount);
   const filterStatus = useSelector(selectFilterStatus);

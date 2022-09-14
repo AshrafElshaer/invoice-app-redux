@@ -21,7 +21,7 @@ export const NotifacationWrapper = styled.div`
   }
   color: ${({ theme }) => theme.clrPrimary};
   position: fixed;
-  top: 0.5rem;
+  top: 5rem;
   right: 1rem;
   display: inline-block;
   padding: 20px 15px;
@@ -32,6 +32,9 @@ export const NotifacationWrapper = styled.div`
   opacity: 0;
   visibility: hidden;
   animation: fade 4s linear forwards;
+  @media screen and (min-width : 768px){
+    top:0.5rem;
+  }
 `;
 
 export const Progress = styled.div`
