@@ -19,6 +19,7 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -99,3 +100,8 @@ export const createNewInvoice = async (invoiceToAdd , userId) => {
     return await updateDoc(userDocRef, { 'Invoices':arrayUnion(invoiceToAdd) })
 
 };
+
+export const deleteInvoiceFromDb = async(invoiceToDelete , userId)=>{
+  const userDocRef = doc(db, "users", userId);
+  return await updateDoc(userDocRef, { 'Invoices':arrayRemove(invoiceToDelete) }).then(console.log('deleted'))
+}

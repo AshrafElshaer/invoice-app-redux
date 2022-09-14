@@ -1,17 +1,22 @@
 import { createPortal } from "react-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteInvoice } from "../../features/invoices/invoicesSlice";
 import { notifyUser } from "../../features/ui/uiSilce";
+import { selectUser } from "../../features/user/user.selectors";
 import Button from "../button/Button";
 
 import { ConfirmModel, Overlay } from "./confirm.styles";
 
 const Confirm = ({ invoice, closeModel }) => {
+  const user = useSelector(selectUser)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleDeleteInvoice = () => {
-    dispatch(deleteInvoice(invoice.id));
+    dispatch(deleteInvoice({
+      payload : invoice,
+      userId : user.uid 
+    }));
     dispatch(
       notifyUser(
         `Invoice # ${invoice.id} has been successfully Deleted.`

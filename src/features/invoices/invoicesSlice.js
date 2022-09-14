@@ -3,6 +3,7 @@ import INVOICES from "../../assets/data.json";
 import {
   fetchInvoicesFromDb,
   createNewInvoice,
+  deleteInvoiceFromDb,
 } from "../../utils/firebase/firebase.utils";
 
 export const fetchinvoices = createAsyncThunk(
@@ -24,10 +25,18 @@ export const addNewInvoice = createAsyncThunk(
     return payload;
   }
 );
+export const deleteInvoice = createAsyncThunk(
+  "invoices/deleteInvoice",
+  async (object) => {
+    const { payload, userId } = object;
+    await deleteInvoiceFromDb(payload, userId);
+    return payload;
+  }
+);
 
 const initialState = {
   invoices: [],
-  status: "idle",
+  fetchStatus: "idle",
   filteredInvoices: [],
   selectedFilterStatus: "total",
 };
@@ -53,22 +62,33 @@ const invoicesSlice = createSlice({
       existingInvoice.status = "paid";
       state.filteredInvoices = state.invoices;
     },
+    clearInvoices: (state) => {
+      state.invoices = [];
+      state.filteredInvoices = [];
+    },
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchinvoices.pending, (state) => {
-        state.status = "pending";
+        state.fetchStatus = "pending";
       })
       .addCase(fetchinvoices.fulfilled, (state, { payload }) => {
         state.invoices = [...payload];
         state.filteredInvoices = state.invoices;
-        state.status = "fulfilled";
+        state.fetchStatus = "fulfilled";
       })
-      .addCase(addNewInvoice.fulfilled, (state, { payload }) => {
-        state.invoices.unshift(payload);
-        state.filteredInvoices = state.invoices;
+      .addCase(fetchinvoices.rejected, (state) => {
+        state.fetchStatus = "rejected";
       });
+    builder.addCase(addNewInvoice.fulfilled, (state, { payload }) => {
+      state.invoices.unshift(payload);
+      state.filteredInvoices = state.invoices;
+    })
+    .addCase(deleteInvoice.fulfilled, (state, { payload })=>{
+      state.invoices = state.invoices.filter((invoice) => invoice.id !== payload.id);
+        state.filteredInvoices = state.invoices;
+    })
   },
 
   // ASYNC FROM FIRBASE DB
@@ -79,13 +99,13 @@ const invoicesSlice = createSlice({
     );
     state.filteredInvoices = state.invoices;
   },
-  deleteInvoice: (state, { payload }) => {
-    state.invoices = state.invoices.filter((invoice) => invoice.id !== payload);
-    state.filteredInvoices = state.invoices;
-  },
+  // deleteInvoice: (state, { payload }) => {
+  //   state.invoices = state.invoices.filter((invoice) => invoice.id !== payload);
+  //   state.filteredInvoices = state.invoices;
+  // },
 });
 
-export const { filterBy, markAsPaid, updateInvoice, deleteInvoice } =
+export const { filterBy, markAsPaid, clearInvoices, updateInvoice } =
   invoicesSlice.actions;
 
 export default invoicesSlice.reducer;

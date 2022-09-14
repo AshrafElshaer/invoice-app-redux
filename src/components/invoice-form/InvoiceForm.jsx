@@ -119,7 +119,6 @@ const InvoiceForm = ({ invoice = invoiceFormTemplate, toggleForm }) => {
             userId: user.uid,
           })
         );
-     
         dispatch(notifyUser(`Invoice # ${id} has been successfully created .`));
         toggleForm();
 

@@ -15,9 +15,7 @@ const uiSlice = createSlice({
         ? (state.theme = "lightTheme")
         : (state.theme = "darkTheme");
     },
-    toggleForm: (state) => {
-      state.models.isFormOpen = !state.models.isFormOpen;
-    },
+    
     notifyUser: (state, { payload }) => {
       state.notificationMsg = payload;
       state.isNotificationOpen = true;
@@ -29,6 +27,6 @@ const uiSlice = createSlice({
   },
 });
 
-export const { toggleTheme, toggleForm, notifyUser ,closeNotification} = uiSlice.actions;
+export const { toggleTheme, notifyUser ,closeNotification} = uiSlice.actions;
 
 export default uiSlice.reducer;

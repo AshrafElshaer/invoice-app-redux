@@ -12,10 +12,10 @@ import {
   toggleTheme,
 } from "../../features/ui/uiSilce";
 import { signOut } from "../../features/user/userSlice";
+import { clearInvoices } from "../../features/invoices/invoicesSlice";
 import { selectUser } from "../../features/user/user.selectors";
 import {
   signOutUser,
-  fetchInvoicesFromDb,
 } from "../../utils/firebase/firebase.utils";
 
 import IMAGES from "../../assets/images";
@@ -39,6 +39,7 @@ const Aside = () => {
   const handleSignOut = () => {
     signOutUser()
       .then(dispatch(signOut()))
+      .then(dispatch(clearInvoices()))
       .then(dispatch(notifyUser("See You Later 👋")));
   };
   const hideNotification = () =>

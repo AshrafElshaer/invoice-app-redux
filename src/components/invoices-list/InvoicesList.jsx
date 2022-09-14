@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import {
+  selectfetchStatus,
   selectFilteredInvoices,
   selectInvoicesCount,
 } from "../../features/invoices/invoces.selector";
@@ -11,13 +12,16 @@ import {
   InvoicesListContainer,
   EmptyInvoicesContainer,
 } from "./invoicesList.styles";
+import Spinner from "../loading-spinner/Spinner";
 
 const InvoicesList = () => {
   const invoices = useSelector(selectFilteredInvoices);
   const invoicesCount = useSelector(selectInvoicesCount);
+  const invoicesFetchStatus = useSelector(selectfetchStatus);
   return (
     <InvoicesListContainer>
-      {!invoicesCount ? (
+      {invoicesFetchStatus === 'pending' || invoicesFetchStatus === 'idle' ? <Spinner /> :
+      !invoicesCount ? (
         <EmptyInvoicesContainer>
           <img src={IMAGES.empryIllusration} alt='no invoces found' />
           <h2>There is nothing here</h2>
@@ -31,7 +35,11 @@ const InvoicesList = () => {
         invoices.map((invoice) => (
           <InvoicePreview invoice={invoice} key={invoice.id} />
         ))
-      )}
+      )
+      
+      }
+      
+      
     </InvoicesListContainer>
   );
 };
