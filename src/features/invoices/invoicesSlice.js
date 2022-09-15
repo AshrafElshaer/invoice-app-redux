@@ -6,7 +6,7 @@ import {
   updateInvoiceToDb,
 } from "../../utils/firebase/firebase.utils";
 
-export const fetchinvoices = createAsyncThunk(
+export const fetchInvoices = createAsyncThunk(
   "invoices/fetchInvoices",
   async (userId) => {
     try {
@@ -32,10 +32,10 @@ export const addNewInvoice = createAsyncThunk(
 export const updateInvoice = createAsyncThunk(
   "invoices/updateInvoice",
   async (object) => {
-    const { payload, userId , invoice} = object;
+    const { payload, userId, invoice } = object;
 
     try {
-      await updateInvoiceToDb(invoice ,payload, userId);
+      await updateInvoiceToDb(invoice, payload, userId);
       return payload;
     } catch (e) {
       return e.message;
@@ -83,15 +83,20 @@ const invoicesSlice = createSlice({
 
   extraReducers: (builder) => {
     builder // fetch invoices from DB
-      .addCase(fetchinvoices.pending, (state) => {
+      .addCase(fetchInvoices.pending, (state) => {
         state.fetchStatus = "pending";
       })
-      .addCase(fetchinvoices.fulfilled, (state, { payload }) => {
-        state.invoices = [...payload];
-        state.filteredInvoices = state.invoices;
-        state.fetchStatus = "fulfilled";
+      .addCase(fetchInvoices.fulfilled, (state, { payload }) => {
+        if (payload === undefined) {
+          state.invoices = [];
+          state.fetchStatus = "fulfilled";
+        } else {
+          state.invoices = [...payload];
+          state.filteredInvoices = state.invoices;
+          state.fetchStatus = "fulfilled";
+        }
       })
-      .addCase(fetchinvoices.rejected, (state, { payload }) => {
+      .addCase(fetchInvoices.rejected, (state, { payload }) => {
         state.fetchStatus = "rejected";
         alert(payload);
       });
@@ -99,17 +104,17 @@ const invoicesSlice = createSlice({
       .addCase(addNewInvoice.fulfilled, (state, { payload }) => {
         state.invoices.unshift(payload);
         state.filteredInvoices = state.invoices;
-      }); 
+      });
     builder // update invoice
-    .addCase(updateInvoice.fulfilled, (state, { payload }) => {
-      state.invoices = state.invoices.map((invoice) =>
-        invoice.id === payload.id ? payload : invoice
-      );
-      state.filteredInvoices = state.invoices;
-    })
-    builder.addCase(updateInvoice.rejected, (state, { payload })=>{
+      .addCase(updateInvoice.fulfilled, (state, { payload }) => {
+        state.invoices = state.invoices.map((invoice) =>
+          invoice.id === payload.id ? payload : invoice
+        );
+        state.filteredInvoices = state.invoices;
+      });
+    builder.addCase(updateInvoice.rejected, (state, { payload }) => {
       alert(payload);
-    })
+    });
     builder // delete invocie
       .addCase(deleteInvoice.fulfilled, (state, { payload }) => {
         state.invoices = state.invoices.filter(
@@ -120,9 +125,7 @@ const invoicesSlice = createSlice({
       .addCase(deleteInvoice.rejected, (state, { payload }) => {
         alert(payload);
       });
-
   },
-
 });
 
 export const { filterBy, clearInvoices } = invoicesSlice.actions;

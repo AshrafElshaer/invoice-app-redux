@@ -88,7 +88,12 @@ export const onAuthChange = (callback) => onAuthStateChanged(auth, callback);
 export const fetchInvoicesFromDb = async (uid) => {
   const userDocRef = doc(db, "users", uid);
   const docSnapshot = await getDoc(userDocRef);
-  return docSnapshot.data().Invoices;
+
+  if (docSnapshot.data() === undefined) {
+    return [];
+  } else {
+    return docSnapshot.data().Invoices;
+  }
 };
 
 export const createNewInvoice = async (invoiceToAdd, userId) => {

@@ -16,7 +16,7 @@ import Home from "./routes/home/Home";
 import NoMatch from "./components/NoMatch";
 import { onAuthChange } from "./utils/firebase/firebase.utils";
 import { loginUser } from "./features/user/userSlice";
-import { fetchinvoices } from "./features/invoices/invoicesSlice";
+import { fetchInvoices } from "./features/invoices/invoicesSlice";
 
 const App = () => {
   const theme = useSelector(selectTheme);
@@ -25,12 +25,11 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthChange((user) => {
-      if(user){
-        dispatch(loginUser(user))
-        dispatch(fetchinvoices(user.uid))
-      }  
-       else
-        navigate("/auth");
+      if (user) {
+        dispatch(loginUser(user));
+        dispatch(fetchInvoices(user.uid));
+
+      } else navigate("/auth");
     });
     return unsubscribe;
   }, []);

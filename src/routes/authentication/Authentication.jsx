@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { FaGoogle } from "react-icons/fa";
@@ -10,7 +10,7 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import { loginUser } from "../../features/user/userSlice";
 import { notifyUser } from "../../features/ui/uiSilce";
-import { fetchinvoices,} from "../../features/invoices/invoicesSlice";
+import { fetchInvoices } from "../../features/invoices/invoicesSlice";
 import FormInput from "../../components/form-input/FormInput";
 import Button from "../../components/button/Button";
 
@@ -18,15 +18,19 @@ import {
   AuthenticationWrapper,
   SwitchAuthWrapper,
 } from "./authentication.styles";
+import { selectUser } from "../../features/user/user.selectors";
 
 const Authentication = () => {
   const [isLogIn, setIsLogIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    user && navigate("/");
+  }, [user]);
 
   const toggleRegistration = () => {
     setIsLogIn(!isLogIn);
@@ -39,16 +43,14 @@ const Authentication = () => {
         loginWithEmail(email, password)
           .then((userAuth) => {
             dispatch(loginUser(userAuth));
-            // dispatch(fetchinvoices(userAuth.uid));
             dispatch(
               notifyUser(
                 `Welcome Back ${
-                  userAuth.displayName
-                    ? userAuth.displayName
-                    : userAuth.email
+                  userAuth.displayName ? userAuth.displayName : userAuth.email
                 } 👋`
               )
             );
+            dispatch(fetchInvoices(userAuth.uid));
             navigate("/");
           })
           .catch((error) => {
@@ -89,32 +91,41 @@ const Authentication = () => {
                 } 👋`
               )
             );
-            navigate("/");
           })
-          .catch((error) => dispatch(notifyUser(error.message)));
+          .catch((error) => {
+            if (
+              error.message === "Firebase: Error (auth/email-already-in-use)."
+            ) {
+              setEmail("");
+              return dispatch(notifyUser("Email Already Exist please Log In"));
+            }
+
+            dispatch(notifyUser(error.message));
+          });
         break;
       default:
         return;
     }
   };
   const signInWithGoogle = async () => {
-    try {
-      const userAuth = await signInWithGooglePopup();
-      dispatch(loginUser(userAuth));
-      dispatch(fetchinvoices(userAuth.uid));
-      dispatch(
-        notifyUser(
-          `Welcome Back ${
-            userAuth.displayName ? userAuth.displayName : userAuth.email
-          } 👋`
-        )
-      );
-      navigate("/");
-    } catch (error) {
-      if (error.message === "Firebase: Error (auth/popup-closed-by-user).")
-        return;
-      dispatch(notifyUser(error.message));
-    }
+    await signInWithGooglePopup()
+      .then((userAuth) => {
+        dispatch(loginUser(userAuth));
+        dispatch(fetchInvoices(userAuth.uid));
+        dispatch(
+          notifyUser(
+            `Welcome Back ${
+              userAuth.displayName ? userAuth.displayName : userAuth.email
+            } 👋`
+          )
+        );
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.message === "Firebase: Error (auth/popup-closed-by-user).")
+          return;
+        dispatch(notifyUser(error.message));
+      });
   };
 
   return (

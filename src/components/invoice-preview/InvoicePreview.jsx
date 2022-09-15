@@ -8,7 +8,7 @@ const InvoicePreview = ({ invoice }) => {
   const { id, paymentDue, clientName, total, status } = invoice;
 
   return (
-    <Wrapper to={id}>
+    <Wrapper to={`/${id}`}>
 
       <h2><span># </span>{id}</h2>
       <span>Due {formatDate(paymentDue)}</span>

@@ -4,7 +4,7 @@ import { mediaQuery } from "../../styles/mediaQuerya.styles";
 export const InvoicesListContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 75vh;
+  height: 70vh;
   margin-top: 2rem;
   // overflow-y: scroll;
   -ms-overflow-style: none;

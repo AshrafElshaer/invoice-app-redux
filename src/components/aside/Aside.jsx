@@ -14,9 +14,7 @@ import {
 import { signOut } from "../../features/user/userSlice";
 import { clearInvoices } from "../../features/invoices/invoicesSlice";
 import { selectUser } from "../../features/user/user.selectors";
-import {
-  signOutUser,
-} from "../../utils/firebase/firebase.utils";
+import { signOutUser } from "../../utils/firebase/firebase.utils";
 
 import IMAGES from "../../assets/images";
 import Notification from "../notification model/Notification";
@@ -50,8 +48,6 @@ const Aside = () => {
 
   useEffect(() => {
     hideNotification();
-    
-    
   }, [isNotificationOpen]);
 
   const handleToggle = () => {
@@ -67,9 +63,12 @@ const Aside = () => {
           alt='theme toggle'
           onClick={handleToggle}
         />
+
         {user && <SignOutBtn onClick={handleSignOut}>Log Out</SignOutBtn>}
         <Profile
-          src={user ? (user.photoURL ? user.photoURL : avatar) : avatar}
+          src={
+            user ? (user.photoURL !== null ? user.photoURL : avatar) : avatar
+          }
           alt='profile'
         />
       </AsideBarWrapper>

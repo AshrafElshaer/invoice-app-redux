@@ -76,7 +76,7 @@ button{
 
 `;
 export const Container = styled.div`
-  height: 100vh;
+  height: 90vh;
   width: 100%;
   max-width: 730px;
   padding-inline: 1.5rem;

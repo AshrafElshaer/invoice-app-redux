@@ -5,6 +5,9 @@ export const AuthenticationWrapper = styled.div`
   height: 100%;
   display: grid;
   place-items: center;
+  @media screen ad (max-width:620px){
+    padding-top:1rem;
+  }
   form {
     width: 70%;
     max-width: 400px;
