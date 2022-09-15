@@ -5,16 +5,15 @@ export const AuthenticationWrapper = styled.div`
   height: 100%;
   display: grid;
   place-items: center;
-  
+
   form {
+    padding-top: 1rem;
     width: 70%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    @media screen ad (max-width:620px){
-      padding-top:1rem;
-    }
+
     div {
       padding: 0;
     }
