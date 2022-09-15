@@ -15,4 +15,5 @@ export const store = configureStore({
     invoices: invoicesReducer,
     ui: uiReducer,
   },
+  devTools: false,
 });
