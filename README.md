@@ -1,3 +1,6 @@
+ Live Preview 
+   - https://curious-meringue-78ffd1.netlify.app/
+
 Overview
    - Full authantication log-in / sign up through firebase auth authantication
    - View the optimal layout for the app depending on their device's screen size
